@@ -225,7 +225,7 @@
 
   <!-- Audio: dial-up for codec connect -->
   <audio id="connectSound" src="https://freesound.org/data/previews/546/546450_11418785-lq.mp3"></audio>
-  <audio id="actionSound" src="https://www.soundjay.com/dial-up-modem-01.mp3"></audio> <!-- Glitchy modem beep -->
+  <audio id="actionSound" src="https://www.soundjay.com/dial-up-modem-01.mp3"></audio>
 
   <div class="container">
     <h1>SEND SOL FOR META GEAR PRE-SALE</h1>
@@ -324,7 +324,18 @@
       if (!publicKey) return;
       actionSound.currentTime = 0;
       actionSound.play().catch(e => console.log("Audio blocked:", e));
-      const url = `https://phantom.app/ul/v1/transfer?to=${encodeURIComponent(publicKey)}&label=Meta%20Gear%20Pre-Sale&message=STANKFAST%20TACTICAL%20DONATION`;
+
+      // Solana Pay deep link – opens Phantom wallet to send screen
+      const suggestedAmount = "0.069"; // optional: change or remove this line if you don't want to suggest an amount
+      let url = `solana:${publicKey}`;
+      
+      if (suggestedAmount) {
+        url += `?amount=${suggestedAmount}`;
+      }
+      
+      url += `&label=Meta%20Gear%20Pre-Sale`;
+      url += `&message=STANKFAST%20Tactical%20Donation%20-%20Extreme%20Peace%20Vibes`;
+
       window.open(url, '_blank');
     }
 
