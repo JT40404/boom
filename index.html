@@ -181,9 +181,10 @@
       margin: 1.5rem 0;
       text-shadow: 0 0 12px #00ff9f;
       min-height: 2.8rem;
+      font-weight: bold;
     }
 
-    .send-btn {
+    .calc-btn {
       background: #0f5c0f;
       border: 5px solid #ff4500;
       color: #c0c0c0;
@@ -196,9 +197,27 @@
       box-shadow: 0 0 20px #ff450088;
     }
 
-    .send-btn:hover {
+    .calc-btn:hover {
+      background: #228b22;
+      transform: scale(1.05);
+    }
+
+    .send-btn {
       background: #ff4500;
+      border: 5px solid #ff4500;
       color: #000;
+      font-family: Impact, sans-serif;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      padding: 1.2rem 3.5rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      box-shadow: 0 0 25px #ff4500;
+      display: none; /* hidden until calculated */
+    }
+
+    .send-btn:hover {
+      background: #ff8c00;
       transform: scale(1.05);
     }
 
@@ -309,9 +328,10 @@
         <span style="font-size:2rem; color:#ff4500;">SOL</span>
       </div>
 
-      <div id="tokensOutput">YOU RECEIVE: 15,000 META GEAR TOKENS</div>
+      <div id="tokensOutput">ENTER AMOUNT ABOVE AND CALCULATE</div>
 
-      <button class="send-btn" onclick="initiateSend()">TRANSMIT SOL FOR TOKENS</button>
+      <button class="calc-btn" onclick="calculateTokens()">CALCULATE TOKENS</button>
+      <button class="send-btn" id="sendBtn" onclick="initiateSend()">TRANSMIT SOL FOR TOKENS</button>
     </div>
 
     <h2 style="color:#ff4500; font-size:2.6rem; margin:2rem 0 1rem;">PHASE 1 ROADMAP • 100M SUPPLY</h2>
@@ -369,6 +389,7 @@
   <script>
     const SOL_ADDRESS = "METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo";
     const PHASE1_RATE = 15000;
+    let calculatedSolAmount = 0;
 
     document.getElementById('myAddress').textContent = SOL_ADDRESS;
 
@@ -383,25 +404,34 @@
 
     const solInput = document.getElementById('solInput');
     const tokensOutput = document.getElementById('tokensOutput');
+    const sendBtn = document.getElementById('sendBtn');
 
-    function updateTokens() {
+    function calculateTokens() {
       let sol = parseFloat(solInput.value) || 0;
+      if (sol < 0.01) sol = 0.01;
+      
+      calculatedSolAmount = sol;
       let tokens = Math.round(sol * PHASE1_RATE);
-      tokensOutput.textContent = `YOU RECEIVE: ${tokens.toLocaleString()} META GEAR TOKENS`;
+      
+      tokensOutput.textContent = `YOU WILL RECEIVE: ${tokens.toLocaleString()} META GEAR TOKENS`;
+      sendBtn.style.display = 'inline-block';
+      sendBtn.textContent = `TRANSMIT ${sol} SOL FOR TOKENS`;
     }
 
-    solInput.addEventListener('input', updateTokens);
-    updateTokens();
-
     function initiateSend() {
-      let solAmount = parseFloat(solInput.value) || 1;
-      if (solAmount < 0.01) solAmount = 0.01;
+      if (calculatedSolAmount < 0.01) calculatedSolAmount = 0.01;
 
-      const tokens = Math.round(solAmount * PHASE1_RATE);
-      const url = `solana:${SOL_ADDRESS}?amount=${solAmount}&label=Meta%20Gear%20Pre-Sale%20Phase%201&message=15,000%20Tokens%20per%20SOL%20-%20${tokens}%20META%20GEAR`;
+      const tokens = Math.round(calculatedSolAmount * PHASE1_RATE);
+      const url = `solana:${SOL_ADDRESS}?amount=${calculatedSolAmount}&label=Meta%20Gear%20Pre-Sale%20Phase%201&message=15,000%20Tokens%20per%20SOL%20-%20${tokens}%20META%20GEAR`;
 
       window.open(url, '_blank');
     }
+
+    // Optional: recalculate on input change (but button still required to show send)
+    solInput.addEventListener('input', () => {
+      tokensOutput.textContent = "PRESS CALCULATE TO UPDATE";
+      sendBtn.style.display = 'none';
+    });
   </script>
 </body>
 </html>
