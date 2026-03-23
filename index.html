@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>META GEAR PRE-SALE - PHASE 1 • META-GEAR DEV TACTICAL ESPIONAGE ACTION</title>
+  <title>META GEAR FUNDRAISING ROUND • INTERACTIVE AR HEALTH REWARDS</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Impact&family=Bebas+Neue&display=swap');
-
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       background: #0a1f0a;
@@ -17,18 +16,16 @@
       overflow-x: hidden;
       position: relative;
       image-rendering: pixelated;
-      background-image: 
+      background-image:
         linear-gradient(rgba(15,92,15,0.08) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,51,0,0.05) 1px, transparent 1px);
       background-size: 5px 5px;
       animation: scanlines 10s linear infinite;
     }
-
     @keyframes scanlines {
       0% { background-position: 0 0; }
       100% { background-position: 0 100px; }
     }
-
     body::before {
       content: "";
       position: fixed;
@@ -38,27 +35,24 @@
       mix-blend-mode: screen;
       animation: noise 0.6s steps(4) infinite;
     }
-
     @keyframes noise {
       0%,100% { opacity: 0.12; }
       50% { opacity: 0.18; transform: translate(1px, -1px); }
     }
-
     .container {
-      max-width: 820px;
+      max-width: 900px;
       margin: 3rem auto;
       padding: 3rem 2.5rem;
       background: rgba(10,30,10,0.85);
       border: 4px solid #8b0000;
       border-image: linear-gradient(to right, #8b0000, #ff4500, #8b0000) 1;
-      box-shadow: 
+      box-shadow:
         0 0 40px #8b0000 inset,
         0 0 30px #ff450044;
       position: relative;
       overflow: hidden;
       text-align: center;
     }
-
     .container::after {
       content: "META GEAR™";
       position: absolute;
@@ -71,15 +65,14 @@
       pointer-events: none;
       text-shadow: 0 0 20px #ff4500;
     }
-
     h1 {
       font-family: Impact, 'Bebas Neue', sans-serif;
-      font-size: 6.8rem;
+      font-size: 6rem;
       text-transform: uppercase;
-      letter-spacing: -7px;
+      letter-spacing: -6px;
       margin: 0.2em 0 0.3em;
       color: #ff4500;
-      text-shadow: 
+      text-shadow:
         0 0 25px #ff4500,
         0 0 50px #ff450088,
         4px 4px 0 #000,
@@ -87,58 +80,27 @@
       line-height: 0.9;
       animation: glitch 4s infinite;
     }
-
     @keyframes glitch {
       0%, 100% { text-shadow: 4px 0 #ff4500, -4px 0 #0f5c0f; }
       20% { text-shadow: -4px 0 #ff4500, 4px 0 #0f5c0f; }
       40% { text-shadow: 4px 4px #ff4500, -4px -4px #0f5c0f; }
     }
-
     .instruction {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       color: #228b22;
       text-shadow: 0 0 12px #228b22aa;
       margin: 1.8rem 0 2.5rem;
       letter-spacing: 2px;
     }
-
-    .address-box {
-      background: #000;
-      border: 5px solid #8b0000;
+    .utility-section {
+      background: rgba(0,20,0,0.75);
+      border: 4px solid #ff4500;
       padding: 2rem;
-      margin: 2.5rem auto;
-      max-width: 92%;
-      font-size: 1.75rem;
-      word-break: break-all;
-      box-shadow: 0 0 30px #8b0000 inset;
+      margin: 2.5rem 0;
+      text-align: left;
+      font-size: 1.6rem;
       color: #00ff9f;
-      position: relative;
     }
-
-    .address-box::before {
-      content: "TRANSMIT SOL TO THIS ADDRESS → PHASE 1 ACCESS";
-      position: absolute;
-      top: -1.8rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0a1f0a;
-      padding: 0 1.8rem;
-      font-size: 1.55rem;
-      color: #ff4500;
-      font-family: Impact, sans-serif;
-      white-space: nowrap;
-      text-shadow: 0 0 10px #ff4500;
-    }
-
-    #qrCode {
-      margin: 3rem auto;
-      background: #000;
-      padding: 1.5rem;
-      border: 6px solid #8b0000;
-      display: inline-block;
-      box-shadow: 0 0 35px #ff4500aa;
-    }
-
     .calculator {
       background: rgba(0,20,0,0.75);
       border: 4px solid #ff4500;
@@ -146,7 +108,6 @@
       margin: 3rem 0;
       text-align: center;
     }
-
     .calculator h2 {
       font-family: Impact, sans-serif;
       font-size: 2.4rem;
@@ -154,7 +115,6 @@
       margin-bottom: 1.5rem;
       text-shadow: 0 0 15px #ff4500;
     }
-
     .input-group {
       display: flex;
       align-items: center;
@@ -163,7 +123,6 @@
       margin: 1.5rem 0;
       flex-wrap: wrap;
     }
-
     .input-group input {
       background: #000;
       border: 3px solid #8b0000;
@@ -174,8 +133,7 @@
       padding: 0.8rem;
       text-align: center;
     }
-
-    #tokensOutput {
+    #allocationOutput {
       font-size: 2.1rem;
       color: #00ff9f;
       margin: 1.5rem 0;
@@ -183,7 +141,6 @@
       min-height: 2.8rem;
       font-weight: bold;
     }
-
     .calc-btn {
       background: #0f5c0f;
       border: 5px solid #ff4500;
@@ -196,13 +153,11 @@
       margin-top: 1rem;
       box-shadow: 0 0 20px #ff450088;
     }
-
     .calc-btn:hover {
       background: #228b22;
       transform: scale(1.05);
     }
-
-    .send-btn {
+    .interest-btn {
       background: #ff4500;
       border: 5px solid #ff4500;
       color: #000;
@@ -213,14 +168,11 @@
       cursor: pointer;
       margin-top: 1.5rem;
       box-shadow: 0 0 25px #ff4500;
-      display: none; /* hidden until calculated */
     }
-
-    .send-btn:hover {
+    .interest-btn:hover {
       background: #ff8c00;
       transform: scale(1.05);
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -228,38 +180,29 @@
       font-size: 1.35rem;
       background: rgba(0,0,0,0.5);
     }
-
     th, td {
       border: 2px solid #8b0000;
       padding: 1rem 1.2rem;
       text-align: center;
     }
-
     th {
       background: #0f5c0f;
       color: #ff4500;
       font-family: Impact, sans-serif;
       font-size: 1.5rem;
     }
-
-    tr:nth-child(even) { background: rgba(139,0,0,0.12); }
-
     .subtext {
       font-size: 1.35rem;
       color: #228b22;
       margin-top: 2rem;
       font-style: italic;
     }
-
     footer {
       text-align: center;
       padding: 4rem 1rem;
       color: #0f5c0f;
       font-size: 1.25rem;
-      overflow: hidden;
-      white-space: nowrap;
     }
-
     .marquee {
       display: inline-block;
       animation: marquee 40s linear infinite;
@@ -268,19 +211,11 @@
       color: #ff4500;
       text-shadow: 0 0 10px #ff4500;
     }
-
     @keyframes marquee {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-
-    .floaters {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-    }
-
+    .floaters { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
     .floater {
       position: absolute;
       font-size: 6rem;
@@ -289,7 +224,6 @@
       color: #ff4500;
       text-shadow: 0 0 30px #ff4500aa;
     }
-
     @keyframes drift {
       0% { transform: translate(-40vw, -40vh) rotate(0deg); }
       100% { transform: translate(140vw, 140vh) rotate(1440deg); }
@@ -297,140 +231,132 @@
   </style>
 </head>
 <body>
-
   <div class="floaters">
-    <div class="floater" style="top:10%;left:5%;animation-delay:0s;">ALERT</div>
+    <div class="floater" style="top:10%;left:5%;animation-delay:0s;">HEALTH PROTOCOL</div>
     <div class="floater" style="top:35%;right:10%;animation-delay:25s; color:#228b22;">META GEAR</div>
-    <div class="floater" style="bottom:30%;left:15%;animation-delay:50s; color:#ff4500;">PRE-SALE</div>
-    <div class="floater" style="top:60%;right:8%;animation-delay:75s; font-size:8rem;">[!]</div>
+    <div class="floater" style="bottom:30%;left:15%;animation-delay:50s; color:#ff4500;">FUNDRAISE</div>
+    <div class="floater" style="top:60%;right:8%;animation-delay:75s; font-size:8rem;">[ACTIVE]</div>
   </div>
-
   <div class="container">
-    <h1>META GEAR PRE-SALE</h1>
-    
+    <h1>META GEAR FUNDRAISING ROUND</h1>
+   
     <div class="instruction">
-      PHASE 1 • 100,000,000 TOTAL SUPPLY
+      STRATEGIC ROUND • INTERACTIVE AR + HEALTH REWARDS TOKEN
     </div>
 
-    <div class="address-box" id="myAddress">
-      METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo
+    <div style="margin:2rem 0;">
+      <p style="font-size:1.8rem; color:#00ff9f;">Your daily moves. Your AR gear. Tokenized rewards for staying healthy.</p>
+      <p>Walk, run, train — earn $MGR tokens via AR overlays on glasses/phone/watch. Gesture to track, complete missions, unlock holograms, stake for boosts. Real utility meets real fitness.</p>
     </div>
-    
-    <div id="qrCode"></div>
+
+<grok-card data-id="96efc3" data-type="image_card" data-plain-type="render_searched_image"  data-arg-size="LARGE" ></grok-card>
+
+
+
+<grok-card data-id="bb1119" data-type="image_card" data-plain-type="render_searched_image"  data-arg-size="LARGE" ></grok-card>
+
+
+
+<grok-card data-id="0359b2" data-type="image_card" data-plain-type="render_searched_image"  data-arg-size="LARGE" ></grok-card>
+
+
+    <div class="utility-section">
+      <h2 style="text-align:center; color:#ff4500;">CORE UTILITY: AR-POWERED HEALTH REWARDS</h2>
+      <ul style="list-style:none; padding:1rem;">
+        <li>• AR holograms overlay workouts: real-time stats, gamified missions, virtual coaches</li>
+        <li>• Move-to-earn: Steps, runs, gym sessions → $MGR rewards (burn + staking mechanics)</li>
+        <li>• Healthy lifestyle incentives: Daily streaks, challenges, partner brand perks</li>
+        <li>• Gear integration: Phone/watch/glasses sync → gesture controls, tokenized achievements</li>
+        <li>• Community governance: Stake $MGR to vote on new AR features & reward pools</li>
+      </ul>
+    </div>
 
     <div class="calculator">
-      <h2>TACTICAL PRESALE CONVERTER</h2>
-      <p style="margin-bottom:1.5rem; color:#228b22;">PHASE 1 RATE: <strong>15,000 META GEAR TOKENS PER SOL</strong></p>
-      
+      <h2>STRATEGIC ROUND CALCULATOR (Illustrative)</h2>
+      <p style="margin-bottom:1.5rem; color:#228b22;">ROUND RATE: <strong>~12,000 $MGR PER SOL</strong> (targeting $40–60M FDV)</p>
+     
       <div class="input-group">
-        <label style="font-size:1.8rem; color:#228b22;">SEND:</label>
-        <input type="number" id="solInput" value="1" step="0.01" min="0.01" style="width:160px;">
-        <span style="font-size:2rem; color:#ff4500;">SOL</span>
+        <label style="font-size:1.8rem; color:#228b22;">CONTRIBUTE:</label>
+        <input type="number" id="solInput" value="5" step="1" min="1" style="width:160px;">
+        <span style="font-size:2rem; color:#ff4500;">SOL (equiv.)</span>
       </div>
-
-      <div id="tokensOutput">ENTER AMOUNT ABOVE AND CALCULATE</div>
-
-      <button class="calc-btn" onclick="calculateTokens()">CALCULATE TOKENS</button>
-      <button class="send-btn" id="sendBtn" onclick="initiateSend()">TRANSMIT SOL FOR TOKENS</button>
+      <div id="allocationOutput">ENTER AMOUNT & CALCULATE</div>
+      <button class="calc-btn" onclick="calculateAllocation()">CALCULATE ALLOCATION</button>
+      <button class="interest-btn" onclick="expressInterest()">EXPRESS INTEREST / REQUEST DECK</button>
     </div>
 
-    <h2 style="color:#ff4500; font-size:2.6rem; margin:2rem 0 1rem;">PHASE 1 ROADMAP • 100M SUPPLY</h2>
+    <h2 style="color:#ff4500; font-size:2.6rem; margin:2rem 0 1rem;">ROUND SNAPSHOT • TOTAL SUPPLY 100M $MGR</h2>
     <table>
       <tr>
-        <th>TOKENS PER SOL</th>
-        <th>EFFECTIVE PRICE</th>
-        <th>TOKENS SOLD (EXAMPLE)</th>
-        <th>SOL RAISED (APPROX.)</th>
-        <th>IMPLIED FDV</th>
+        <th>ALLOCATION</th>
+        <th>PERCENT</th>
+        <th>PURPOSE</th>
       </tr>
       <tr>
-        <td><strong>25,000</strong></td>
-        <td>~$0.0076</td>
-        <td>10M</td>
-        <td>~400 SOL</td>
-        <td>~$760k (high upside)</td>
+        <td>Strategic Round</td>
+        <td>18%</td>
+        <td>Investors & partners (vested)</td>
       </tr>
       <tr>
-        <td><strong>15,000</strong></td>
-        <td>~$0.0127</td>
-        <td>8M</td>
-        <td>~533 SOL</td>
-        <td>~$1.27M (recommended)</td>
+        <td>Ecosystem Rewards</td>
+        <td>25%</td>
+        <td>Move-to-earn, AR missions, liquidity mining</td>
       </tr>
       <tr>
-        <td>10,000</td>
-        <td>~$0.019</td>
-        <td>6M</td>
-        <td>~600 SOL</td>
-        <td>~$1.9M</td>
+        <td>Team & Advisors</td>
+        <td>15%</td>
+        <td>4-year vest</td>
       </tr>
       <tr>
-        <td>5,000</td>
-        <td>~$0.038</td>
-        <td>4M</td>
-        <td>~800 SOL</td>
-        <td>~$3.8M (premium)</td>
+        <td>Community / Public</td>
+        <td>20%</td>
+        <td>TGE airdrops, future rounds</td>
+      </tr>
+      <tr>
+        <td>Treasury / Dev</td>
+        <td>12%</td>
+        <td>AR app build, audits, partnerships</td>
+      </tr>
+      <tr>
+        <td>Liquidity / Marketing</td>
+        <td>10%</td>
+        <td>DEX pools, growth</td>
       </tr>
     </table>
 
     <div class="subtext">
-      Phase 1 rate locked at 15,000 tokens per SOL • First-come, first-served • 
-      Scan / copy address above or use converter • Access granted instantly on confirmation
+      Targeting $2–5M raise • SAFE + token warrant • Utility-first: AR fitness rewards, not hype •
+      Contact for whitepaper, tokenomics, deck • Serious inquiries only
     </div>
   </div>
 
   <footer>
     <div class="marquee">
-      META-GEAR DEV • MARCH 2026 • TACTICAL ESPIONAGE ACTION • META GEAR PRE-SALE • NOT FINANCIAL ADVICE • SOLIDARITY OR DEATH • 
+      META GEAR • MARCH 2026 • AR HEALTH PROTOCOL • MOVE-TO-EARN UTILITY • NOT FINANCIAL ADVICE • LEVEL UP YOUR LIFE •
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    const SOL_ADDRESS = "METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo";
-    const PHASE1_RATE = 15000;
-    let calculatedSolAmount = 0;
-
-    document.getElementById('myAddress').textContent = SOL_ADDRESS;
-
-    new QRCode(document.getElementById("qrCode"), {
-      text: SOL_ADDRESS,
-      width: 280,
-      height: 280,
-      colorDark: "#000000",
-      colorLight: "#054500",
-      correctLevel: QRCode.CorrectLevel.H
-    });
-
+    const PHASE_RATE = 12000; // illustrative
+    let calculatedSol = 0;
     const solInput = document.getElementById('solInput');
-    const tokensOutput = document.getElementById('tokensOutput');
-    const sendBtn = document.getElementById('sendBtn');
+    const allocationOutput = document.getElementById('allocationOutput');
 
-    function calculateTokens() {
-      let sol = parseFloat(solInput.value) || 0;
-      if (sol < 0.01) sol = 0.01;
-      
-      calculatedSolAmount = sol;
-      let tokens = Math.round(sol * PHASE1_RATE);
-      
-      tokensOutput.textContent = `YOU WILL RECEIVE: ${tokens.toLocaleString()} META GEAR TOKENS`;
-      sendBtn.style.display = 'inline-block';
-      sendBtn.textContent = `TRANSMIT ${sol} SOL FOR TOKENS`;
+    function calculateAllocation() {
+      let sol = parseFloat(solInput.value) || 1;
+      if (sol < 1) sol = 1;
+      calculatedSol = sol;
+      let tokens = Math.round(sol * PHASE_RATE);
+      allocationOutput.textContent = `ESTIMATED ALLOCATION: ${tokens.toLocaleString()} $MGR TOKENS`;
     }
 
-    function initiateSend() {
-      if (calculatedSolAmount < 0.01) calculatedSolAmount = 0.01;
-
-      const tokens = Math.round(calculatedSolAmount * PHASE1_RATE);
-      const url = `solana:${SOL_ADDRESS}?amount=${calculatedSolAmount}&label=Meta%20Gear%20Pre-Sale%20Phase%201&message=15,000%20Tokens%20per%20SOL%20-%20${tokens}%20META%20GEAR`;
-
-      window.open(url, '_blank');
+    function expressInterest() {
+      alert("Interest noted! In a real deployment, this would link to Telegram/Discord/form for deck access & KYC/qualification. DM @G3N3R4T10N4L_W on X for details.");
+      // In production: window.location = "https://your-form-link.com";
     }
 
-    // Optional: recalculate on input change (but button still required to show send)
     solInput.addEventListener('input', () => {
-      tokensOutput.textContent = "PRESS CALCULATE TO UPDATE";
-      sendBtn.style.display = 'none';
+      allocationOutput.textContent = "PRESS CALCULATE TO UPDATE";
     });
   </script>
 </body>
