@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>META GEAR FUNDRAISING ROUND • INTERACTIVE AR HEALTH REWARDS</title>
+  <title>META GEAR • STRATEGIC FUNDRAISING ROUND</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Impact&family=Bebas+Neue&display=swap');
@@ -40,15 +40,15 @@
       50% { opacity: 0.18; transform: translate(1px, -1px); }
     }
     .container {
-      max-width: 900px;
-      margin: 3rem auto;
+      max-width: 820px;
+      margin: 4rem auto;
       padding: 3rem 2.5rem;
-      background: rgba(10,30,10,0.85);
+      background: rgba(10,30,10,0.92);
       border: 4px solid #8b0000;
       border-image: linear-gradient(to right, #8b0000, #ff4500, #8b0000) 1;
       box-shadow:
-        0 0 40px #8b0000 inset,
-        0 0 30px #ff450044;
+        0 0 50px #8b0000 inset,
+        0 0 40px #ff450044;
       position: relative;
       overflow: hidden;
       text-align: center;
@@ -56,303 +56,275 @@
     .container::after {
       content: "META GEAR™";
       position: absolute;
-      top: -45px; right: 40px;
+      top: -50px; right: 30px;
       font-family: Impact, sans-serif;
-      font-size: 6.5rem;
-      color: #ff450033;
-      transform: rotate(15deg);
-      opacity: 0.22;
+      font-size: 7.5rem;
+      color: #ff450022;
+      transform: rotate(12deg);
+      opacity: 0.25;
       pointer-events: none;
-      text-shadow: 0 0 20px #ff4500;
+      text-shadow: 0 0 25px #ff4500;
     }
     h1 {
       font-family: Impact, 'Bebas Neue', sans-serif;
-      font-size: 6rem;
+      font-size: 7.2rem;
       text-transform: uppercase;
-      letter-spacing: -6px;
-      margin: 0.2em 0 0.3em;
+      letter-spacing: -8px;
+      margin: 0.1em 0 0.4em;
       color: #ff4500;
       text-shadow:
-        0 0 25px #ff4500,
-        0 0 50px #ff450088,
-        4px 4px 0 #000,
-        -4px -4px 0 #000;
-      line-height: 0.9;
-      animation: glitch 4s infinite;
+        0 0 30px #ff4500,
+        0 0 60px #ff450099,
+        5px 5px 0 #000,
+        -5px -5px 0 #000;
+      line-height: 0.85;
+      animation: glitch 5s infinite;
     }
     @keyframes glitch {
-      0%, 100% { text-shadow: 4px 0 #ff4500, -4px 0 #0f5c0f; }
-      20% { text-shadow: -4px 0 #ff4500, 4px 0 #0f5c0f; }
-      40% { text-shadow: 4px 4px #ff4500, -4px -4px #0f5c0f; }
+      0%, 100% { text-shadow: 5px 0 #ff4500, -5px 0 #0f5c0f; }
+      20% { text-shadow: -5px 0 #ff4500, 5px 0 #0f5c0f; }
+      40% { text-shadow: 5px 5px #ff4500, -5px -5px #0f5c0f; }
     }
-    .instruction {
-      font-size: 2.2rem;
+    .tagline {
+      font-size: 2.4rem;
       color: #228b22;
-      text-shadow: 0 0 12px #228b22aa;
-      margin: 1.8rem 0 2.5rem;
-      letter-spacing: 2px;
-    }
-    .utility-section {
-      background: rgba(0,20,0,0.75);
-      border: 4px solid #ff4500;
-      padding: 2rem;
-      margin: 2.5rem 0;
-      text-align: left;
-      font-size: 1.6rem;
-      color: #00ff9f;
+      text-shadow: 0 0 15px #228b22aa;
+      margin: 2rem 0 3rem;
+      letter-spacing: 3px;
     }
     .calculator {
-      background: rgba(0,20,0,0.75);
-      border: 4px solid #ff4500;
-      padding: 2.2rem;
+      background: rgba(0,20,0,0.8);
+      border: 5px solid #ff4500;
+      padding: 2.5rem;
       margin: 3rem 0;
       text-align: center;
     }
     .calculator h2 {
       font-family: Impact, sans-serif;
-      font-size: 2.4rem;
+      font-size: 2.8rem;
       color: #ff4500;
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 15px #ff4500;
+      margin-bottom: 1.8rem;
+      text-shadow: 0 0 18px #ff4500;
     }
     .input-group {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1rem;
-      margin: 1.5rem 0;
+      gap: 1.2rem;
+      margin: 2rem 0;
       flex-wrap: wrap;
     }
     .input-group input {
       background: #000;
-      border: 3px solid #8b0000;
+      border: 4px solid #8b0000;
       color: #00ff9f;
       font-family: 'VT323', monospace;
-      font-size: 2.2rem;
-      width: 180px;
-      padding: 0.8rem;
+      font-size: 2.5rem;
+      width: 200px;
+      padding: 1rem;
       text-align: center;
     }
     #allocationOutput {
-      font-size: 2.1rem;
+      font-size: 2.4rem;
       color: #00ff9f;
-      margin: 1.5rem 0;
-      text-shadow: 0 0 12px #00ff9f;
-      min-height: 2.8rem;
+      margin: 2rem 0;
+      text-shadow: 0 0 15px #00ff9f;
+      min-height: 3rem;
       font-weight: bold;
     }
     .calc-btn {
       background: #0f5c0f;
-      border: 5px solid #ff4500;
+      border: 6px solid #ff4500;
       color: #c0c0c0;
       font-family: Impact, sans-serif;
-      font-size: 1.8rem;
+      font-size: 2rem;
       text-transform: uppercase;
-      padding: 1.2rem 3.5rem;
+      padding: 1.4rem 4rem;
       cursor: pointer;
-      margin-top: 1rem;
-      box-shadow: 0 0 20px #ff450088;
+      margin: 1rem;
+      box-shadow: 0 0 25px #ff450099;
     }
     .calc-btn:hover {
       background: #228b22;
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
     .interest-btn {
       background: #ff4500;
-      border: 5px solid #ff4500;
+      border: 6px solid #ff4500;
       color: #000;
       font-family: Impact, sans-serif;
-      font-size: 1.8rem;
+      font-size: 2rem;
       text-transform: uppercase;
-      padding: 1.2rem 3.5rem;
+      padding: 1.4rem 4rem;
       cursor: pointer;
-      margin-top: 1.5rem;
-      box-shadow: 0 0 25px #ff4500;
+      margin: 1.5rem;
+      box-shadow: 0 0 30px #ff4500;
     }
     .interest-btn:hover {
       background: #ff8c00;
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
-    table {
+    .allocation-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 3rem 0;
-      font-size: 1.35rem;
-      background: rgba(0,0,0,0.5);
+      margin: 4rem 0;
+      font-size: 1.5rem;
+      background: rgba(0,0,0,0.6);
     }
     th, td {
-      border: 2px solid #8b0000;
-      padding: 1rem 1.2rem;
+      border: 3px solid #8b0000;
+      padding: 1.2rem;
       text-align: center;
     }
     th {
       background: #0f5c0f;
       color: #ff4500;
       font-family: Impact, sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
     }
     .subtext {
-      font-size: 1.35rem;
+      font-size: 1.5rem;
       color: #228b22;
-      margin-top: 2rem;
+      margin: 3rem 0;
       font-style: italic;
     }
     footer {
       text-align: center;
-      padding: 4rem 1rem;
+      padding: 5rem 1rem 3rem;
       color: #0f5c0f;
-      font-size: 1.25rem;
+      font-size: 1.4rem;
     }
     .marquee {
       display: inline-block;
-      animation: marquee 40s linear infinite;
+      animation: marquee 45s linear infinite;
       text-transform: uppercase;
-      letter-spacing: 8px;
+      letter-spacing: 10px;
       color: #ff4500;
-      text-shadow: 0 0 10px #ff4500;
+      text-shadow: 0 0 12px #ff4500;
     }
     @keyframes marquee {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    .floaters { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
+    .floaters {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
     .floater {
       position: absolute;
-      font-size: 6rem;
-      opacity: 0.09;
-      animation: drift 90s linear infinite;
+      font-size: 7rem;
+      opacity: 0.08;
+      animation: drift 100s linear infinite;
       color: #ff4500;
-      text-shadow: 0 0 30px #ff4500aa;
+      text-shadow: 0 0 35px #ff4500aa;
     }
     @keyframes drift {
-      0% { transform: translate(-40vw, -40vh) rotate(0deg); }
-      100% { transform: translate(140vw, 140vh) rotate(1440deg); }
+      0% { transform: translate(-50vw, -50vh) rotate(0deg); }
+      100% { transform: translate(150vw, 150vh) rotate(1800deg); }
     }
   </style>
 </head>
 <body>
   <div class="floaters">
-    <div class="floater" style="top:10%;left:5%;animation-delay:0s;">HEALTH PROTOCOL</div>
-    <div class="floater" style="top:35%;right:10%;animation-delay:25s; color:#228b22;">META GEAR</div>
-    <div class="floater" style="bottom:30%;left:15%;animation-delay:50s; color:#ff4500;">FUNDRAISE</div>
-    <div class="floater" style="top:60%;right:8%;animation-delay:75s; font-size:8rem;">[ACTIVE]</div>
+    <div class="floater" style="top:8%;left:6%;animation-delay:0s;">STRATEGIC</div>
+    <div class="floater" style="top:40%;right:12%;animation-delay:30s; color:#228b22;">ROUND</div>
+    <div class="floater" style="bottom:25%;left:18%;animation-delay:60s; color:#ff4500;">META GEAR</div>
+    <div class="floater" style="top:65%;right:10%;animation-delay:90s; font-size:9rem;">[!]</div>
   </div>
+
   <div class="container">
-    <h1>META GEAR FUNDRAISING ROUND</h1>
+    <h1>STRATEGIC FUNDRAISING ROUND</h1>
    
-    <div class="instruction">
-      STRATEGIC ROUND • INTERACTIVE AR + HEALTH REWARDS TOKEN
-    </div>
-
-    <div style="margin:2rem 0;">
-      <p style="font-size:1.8rem; color:#00ff9f;">Your daily moves. Your AR gear. Tokenized rewards for staying healthy.</p>
-      <p>Walk, run, train — earn $MGR tokens via AR overlays on glasses/phone/watch. Gesture to track, complete missions, unlock holograms, stake for boosts. Real utility meets real fitness.</p>
-    </div>
-
-<grok-card data-id="96efc3" data-type="image_card" data-plain-type="render_searched_image"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="bb1119" data-type="image_card" data-plain-type="render_searched_image"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="0359b2" data-type="image_card" data-plain-type="render_searched_image"  data-arg-size="LARGE" ></grok-card>
-
-
-    <div class="utility-section">
-      <h2 style="text-align:center; color:#ff4500;">CORE UTILITY: AR-POWERED HEALTH REWARDS</h2>
-      <ul style="list-style:none; padding:1rem;">
-        <li>• AR holograms overlay workouts: real-time stats, gamified missions, virtual coaches</li>
-        <li>• Move-to-earn: Steps, runs, gym sessions → $MGR rewards (burn + staking mechanics)</li>
-        <li>• Healthy lifestyle incentives: Daily streaks, challenges, partner brand perks</li>
-        <li>• Gear integration: Phone/watch/glasses sync → gesture controls, tokenized achievements</li>
-        <li>• Community governance: Stake $MGR to vote on new AR features & reward pools</li>
-      </ul>
+    <div class="tagline">
+      MARCH 2026 • LIMITED ACCESS
     </div>
 
     <div class="calculator">
-      <h2>STRATEGIC ROUND CALCULATOR (Illustrative)</h2>
-      <p style="margin-bottom:1.5rem; color:#228b22;">ROUND RATE: <strong>~12,000 $MGR PER SOL</strong> (targeting $40–60M FDV)</p>
+      <h2>ROUND CALCULATOR (Illustrative)</h2>
+      <p style="margin:1.5rem 0 2rem; color:#228b22; font-size:1.8rem;">
+        INDICATIVE RATE: <strong>~12,000 $MGR PER SOL</strong>
+      </p>
      
       <div class="input-group">
-        <label style="font-size:1.8rem; color:#228b22;">CONTRIBUTE:</label>
-        <input type="number" id="solInput" value="5" step="1" min="1" style="width:160px;">
-        <span style="font-size:2rem; color:#ff4500;">SOL (equiv.)</span>
+        <label style="font-size:2.2rem; color:#228b22;">CONTRIBUTE:</label>
+        <input type="number" id="solInput" value="5" step="1" min="1">
+        <span style="font-size:2.5rem; color:#ff4500;">SOL (equiv.)</span>
       </div>
       <div id="allocationOutput">ENTER AMOUNT & CALCULATE</div>
-      <button class="calc-btn" onclick="calculateAllocation()">CALCULATE ALLOCATION</button>
-      <button class="interest-btn" onclick="expressInterest()">EXPRESS INTEREST / REQUEST DECK</button>
+      <button class="calc-btn" onclick="calculateAllocation()">CALCULATE</button>
+      <button class="interest-btn" onclick="expressInterest()">EXPRESS INTEREST • REQUEST DECK</button>
     </div>
 
-    <h2 style="color:#ff4500; font-size:2.6rem; margin:2rem 0 1rem;">ROUND SNAPSHOT • TOTAL SUPPLY 100M $MGR</h2>
-    <table>
+    <table class="allocation-table">
       <tr>
         <th>ALLOCATION</th>
         <th>PERCENT</th>
-        <th>PURPOSE</th>
+        <th>NOTES</th>
       </tr>
       <tr>
         <td>Strategic Round</td>
         <td>18%</td>
-        <td>Investors & partners (vested)</td>
+        <td>Investors & partners – vested</td>
       </tr>
       <tr>
-        <td>Ecosystem Rewards</td>
+        <td>Ecosystem Incentives</td>
         <td>25%</td>
-        <td>Move-to-earn, AR missions, liquidity mining</td>
+        <td>Rewards, liquidity mining</td>
       </tr>
       <tr>
         <td>Team & Advisors</td>
         <td>15%</td>
-        <td>4-year vest</td>
+        <td>4-year linear vest</td>
       </tr>
       <tr>
         <td>Community / Public</td>
         <td>20%</td>
-        <td>TGE airdrops, future rounds</td>
+        <td>TGE & future access</td>
       </tr>
       <tr>
-        <td>Treasury / Dev</td>
+        <td>Treasury / Development</td>
         <td>12%</td>
-        <td>AR app build, audits, partnerships</td>
+        <td>Protocol build & audits</td>
       </tr>
       <tr>
-        <td>Liquidity / Marketing</td>
+        <td>Liquidity & Marketing</td>
         <td>10%</td>
-        <td>DEX pools, growth</td>
+        <td>DEX pools & growth</td>
       </tr>
     </table>
 
     <div class="subtext">
-      Targeting $2–5M raise • SAFE + token warrant • Utility-first: AR fitness rewards, not hype •
-      Contact for whitepaper, tokenomics, deck • Serious inquiries only
+      Targeting $2–5M equivalent • SAFE + token warrant structure •<br>
+      Serious inquiries only • Whitepaper, full tokenomics & deck on request
     </div>
   </div>
 
   <footer>
     <div class="marquee">
-      META GEAR • MARCH 2026 • AR HEALTH PROTOCOL • MOVE-TO-EARN UTILITY • NOT FINANCIAL ADVICE • LEVEL UP YOUR LIFE •
+      META GEAR • STRATEGIC ROUND • MARCH 2026 • LIMITED SLOTS • NOT FINANCIAL ADVICE •
     </div>
   </footer>
 
   <script>
-    const PHASE_RATE = 12000; // illustrative
-    let calculatedSol = 0;
+    const INDICATIVE_RATE = 12000;
+    let calculatedAmount = 0;
+
     const solInput = document.getElementById('solInput');
     const allocationOutput = document.getElementById('allocationOutput');
 
     function calculateAllocation() {
-      let sol = parseFloat(solInput.value) || 1;
-      if (sol < 1) sol = 1;
-      calculatedSol = sol;
-      let tokens = Math.round(sol * PHASE_RATE);
-      allocationOutput.textContent = `ESTIMATED ALLOCATION: ${tokens.toLocaleString()} $MGR TOKENS`;
+      let amount = parseFloat(solInput.value) || 1;
+      if (amount < 1) amount = 1;
+      calculatedAmount = amount;
+      let tokens = Math.round(amount * INDICATIVE_RATE);
+      allocationOutput.textContent = `ESTIMATED: ${tokens.toLocaleString()} $MGR`;
     }
 
     function expressInterest() {
-      alert("Interest noted! In a real deployment, this would link to Telegram/Discord/form for deck access & KYC/qualification. DM @G3N3R4T10N4L_W on X for details.");
-      // In production: window.location = "https://your-form-link.com";
+      alert("Interest registered. In live deployment this links to form / Telegram / email for deck & qualification. DM @METAGEAR_DEV on X.");
+      // Real version: window.open("https://your-form-or-telegram-link", "_blank");
     }
 
     solInput.addEventListener('input', () => {
