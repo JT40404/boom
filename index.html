@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Borrow SOL from Friends - StankFast</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0.4em 0;
+      font-size: 2.8rem;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .container {
+      max-width: 600px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .address-box {
+      background: rgba(0,0,0,0.4);
+      padding: 1.2rem;
+      border-radius: 12px;
+      word-break: break-all;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      margin: 1.5rem 0;
+      border: 1px dashed #60a5fa;
+    }
+    button {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 0.8rem 0.5rem;
+      transition: all 0.25s;
+    }
+    button:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(99,102,241,0.4);
+    }
+    button:disabled {
+      background: #4b5563;
+      cursor: not-allowed;
+    }
+    .status {
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      min-height: 1.5em;
+    }
+    #qrCode {
+      margin: 1.5rem auto;
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    footer {
+      margin-top: auto;
+      padding: 2rem 0;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .warning {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid #f59e0b;
+      color: #fcd34d;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 2rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Borrow SOL from Friends</h1>
+    <p style="color:#d1d5db; margin-bottom:2rem;">
+      Connect your Phantom wallet so your friends can see where to send SOL.<br>
+      This page <strong>only shows your address</strong> — nothing gets approved or spent.
+    </p>
+
+    <button id="connectBtn">Connect Phantom Wallet</button>
+
+    <div class="status" id="status">Waiting for connection...</div>
+
+    <div id="addressSection" style="display:none;">
+      <div class="address-box" id="myAddress"></div>
+      
+      <p style="margin:1.5rem 0 1rem;">Share this address or let friends scan the QR:</p>
+      
+      <div id="qrCode"></div>
+
+      <div>
+        <button onclick="copyAddress()">Copy Address</button>
+        <button id="phantomPayBtn" onclick="openInPhantom()" disabled>
+          Open in Phantom (Solana Pay)
+        </button>
+      </div>
+    </div>
+
+    <div class="warning">
+      ⚠️ This is a trust-based IOU between friends.<br>
+      Only share with people you actually know and trust.<br>
+      No smart contracts, no enforcement — it's just a friendly loan.
+    </div>
+  </div>
+
+  <footer>
+    Made by StankFast • March 2026 • Not financial advice
+  </footer>
+
+  <!-- Solana web3.js -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    const connectBtn = document.getElementById('connectBtn');
+    const status = document.getElementById('status');
+    const addressSection = document.getElementById('addressSection');
+    const myAddressDiv = document.getElementById('myAddress');
+    const phantomPayBtn = document.getElementById('phantomPayBtn');
+
+    let publicKey = null;
+
+    async function connectWallet() {
+      if (!window.solana || !window.solana.isPhantom) {
+        status.textContent = "Phantom wallet not detected. Please install Phantom → phantom.app";
+        return;
+      }
+
+      try {
+        connectBtn.disabled = true;
+        connectBtn.textContent = "Connecting...";
+        status.textContent = "Requesting connection...";
+
+        const resp = await window.solana.connect({ onlyIfTrusted: false });
+        publicKey = resp.publicKey.toString();
+
+        myAddressDiv.textContent = publicKey;
+        status.textContent = "Connected! Your friends can now send SOL here.";
+        addressSection.style.display = 'block';
+        phantomPayBtn.disabled = false;
+
+        // Generate QR code
+        document.getElementById('qrCode').innerHTML = "";
+        new QRCode(document.getElementById("qrCode"), {
+          text: publicKey,
+          width: 200,
+          height: 200,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+
+      } catch (err) {
+        console.error(err);
+        status.textContent = "Connection failed: " + (err.message || "User rejected");
+        connectBtn.disabled = false;
+        connectBtn.textContent = "Connect Phantom Wallet";
+      }
+    }
+
+    function copyAddress() {
+      if (!publicKey) return;
+      navigator.clipboard.writeText(publicKey).then(() => {
+        status.textContent = "Address copied to clipboard! ✓";
+        setTimeout(() => {
+          status.textContent = "Connected! Your friends can now send SOL here.";
+        }, 2200);
+      }).catch(() => {
+        status.textContent = "Failed to copy — please select manually";
+      });
+    }
+
+    function openInPhantom() {
+      if (!publicKey) return;
+      const url = `https://phantom.app/ul/v1/transfer?to=${encodeURIComponent(publicKey)}&label=StankFast%20Loan`;
+      window.open(url, '_blank');
+    }
+
+    // Try auto-connect if already trusted
+    window.addEventListener('load', async () => {
+      if (window.solana?.isPhantom) {
+        try {
+          await window.solana.connect({ onlyIfTrusted: true });
+          if (window.solana.isConnected) {
+            publicKey = window.solana.publicKey.toString();
+            myAddressDiv.textContent = publicKey;
+            status.textContent = "Auto-connected from trusted session!";
+            addressSection.style.display = 'block';
+            phantomPayBtn.disabled = false;
+            connectBtn.style.display = 'none';
+
+            // QR
+            new QRCode(document.getElementById("qrCode"), {
+              text: publicKey,
+              width: 200,
+              height: 200,
+              colorDark: "#000000",
+              colorLight: "#ffffff",
+              correctLevel: QRCode.CorrectLevel.H
+            });
+          }
+        } catch (e) {
+          // silent — user clicks manually
+        }
+      }
+    });
+
+    connectBtn.onclick = connectWallet;
+  </script>
+
+</body>
+</html>
