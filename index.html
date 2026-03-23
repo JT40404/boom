@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BORROW SOL FROM FRIENDS - STANKFAST™ EXTREME LOAN PROTOCOL</title>
+  <title>SEND SOL FOR META GEAR PRE-SALE - STANKFAST TACTICAL ESPIONAGE ACTION</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap'); /* retro mono */
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Impact&family=Bebas+Neue&display=swap');
 
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: #000;
-      color: #00ff9f;
+      background: #0a1f0a; /* Deep military green-black */
+      color: #c0c0c0;
       font-family: 'VT323', 'Courier New', monospace;
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
       image-rendering: pixelated;
       background-image: 
-        linear-gradient(rgba(0,255,159,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,0,170,0.03) 1px, transparent 1px);
-      background-size: 4px 4px;
-      animation: scanlines 8s linear infinite;
+        linear-gradient(rgba(28,51,26,0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108,131,146,0.1) 1px, transparent 1px);
+      background-size: 5px 5px;
+      animation: scanlines 10s linear infinite;
     }
 
     @keyframes scanlines {
@@ -33,110 +33,104 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.15"/></svg>') repeat;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.12"/></svg>') repeat;
       pointer-events: none;
       mix-blend-mode: screen;
-      animation: noise 0.5s steps(5) infinite;
+      animation: noise 0.6s steps(4) infinite;
     }
 
     @keyframes noise {
-      0%,100% { opacity: 0.15; }
-      50% { opacity: 0.25; transform: translate(2px, -2px); }
+      0%,100% { opacity: 0.12; }
+      50% { opacity: 0.18; transform: translate(1px, -1px); }
     }
 
     .container {
-      max-width: 680px;
+      max-width: 720px;
       margin: 2rem auto;
       padding: 2.5rem;
-      background: rgba(10,10,15,0.85);
-      border: 4px solid #ff00aa;
-      border-image: linear-gradient(to right, #ff00aa, #00ff9f, #9d00ff) 1;
-      border-radius: 0;
+      background: rgba(30,66,66,0.75);
+      border: 4px solid #6c8392;
+      border-image: linear-gradient(to right, #6c8392, #adc4ce, #2e4242) 1;
       box-shadow: 
-        0 0 30px #ff00aa88 inset,
-        0 0 60px #000 inset,
-        0 0 40px #00ff9f44;
+        0 0 35px #2e4242 inset,
+        0 0 25px #ff660044;
       position: relative;
-      transform: rotate(-1.2deg) scale(1.02);
       overflow: hidden;
     }
 
     .container::after {
-      content: "WORLD PEACE™";
+      content: "META GEAR™";
       position: absolute;
-      top: -20px; right: 20px;
+      top: -30px; right: 30px;
       font-family: Impact, sans-serif;
-      font-size: 4rem;
-      color: #ff003388;
-      transform: rotate(15deg);
-      opacity: 0.15;
+      font-size: 5rem;
+      color: #ff660033;
+      transform: rotate(12deg);
+      opacity: 0.2;
       pointer-events: none;
-      text-shadow: 0 0 20px #ff0033;
+      text-shadow: 0 0 15px #ff6600;
     }
 
     h1 {
       font-family: Impact, 'Bebas Neue', sans-serif;
-      font-size: 4.2rem;
+      font-size: 4.5rem;
       text-transform: uppercase;
-      letter-spacing: -4px;
+      letter-spacing: -5px;
       text-align: center;
-      margin: 0.5em 0 0.8em;
-      background: linear-gradient(90deg, #ff00aa, #00ff9f, #9d00ff, #ff0033, #ff00aa);
-      background-size: 400%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glitch 4s infinite, hue 12s infinite;
+      margin: 0.4em 0 0.6em;
+      color: #ff6600;
+      text-shadow: 0 0 20px #ff6600, 0 0 40px #ff660044;
+      animation: glitch 5s infinite;
     }
 
     @keyframes glitch {
-      0%, 100% { text-shadow: 0.05em 0 0 #ff00aa, -0.05em 0 0 #00ffff; }
-      14% { text-shadow: 0.05em 0 0 #ff00aa, -0.05em 0 0 #00ffff; }
-      15% { text-shadow: -0.05em -0.025em 0 #ff00aa, 0.025em 0.025em 0 #00ffff; }
-      /* more keyframes for full RGB split if you want */
+      0%, 100% { text-shadow: 2px 0 #ff6600, -2px 0 #c0c0c0; }
+      20% { text-shadow: -2px 0 #ff6600, 2px 0 #c0c0c0; }
+      40% { text-shadow: 2px 2px #ff6600, -2px -2px #c0c0c0; }
     }
 
-    @keyframes hue { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-
-    p, .status, .warning {
-      color: #00ff9f;
-      text-shadow: 0 0 8px #00ff9f44;
-      line-height: 1.6;
+    p, .status {
+      color: #adc4ce;
+      text-shadow: 0 0 6px #adc4ce44;
+      line-height: 1.7;
+      font-size: 1.5rem;
     }
 
     .address-box {
       background: #000;
-      border: 3px dashed #00ff9f;
-      padding: 1.5rem;
+      border: 4px solid #054500; /* MGS green */
+      padding: 1.6rem;
       margin: 2rem 0;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       word-break: break-all;
-      box-shadow: 0 0 25px #00ff9f88 inset;
+      box-shadow: 0 0 20px #054500 inset;
       position: relative;
     }
 
     .address-box::before {
-      content: "SEND SOL HERE →";
+      content: "TRANSMIT SOL HERE → PRE-SALE ACCESS";
       position: absolute;
-      top: -1.2rem;
-      left: 1rem;
-      background: #000;
-      padding: 0 0.8rem;
-      font-size: 1.2rem;
-      color: #ff00aa;
+      top: -1.4rem;
+      left: 1.2rem;
+      background: #0a1f0a;
+      padding: 0 1rem;
+      font-size: 1.3rem;
+      color: #ff6600;
+      font-family: Impact, sans-serif;
     }
 
     button {
-      background: #000;
-      border: 4px solid #ff00aa;
-      color: #00ff9f;
+      background: #1a3c1a;
+      border: 4px solid #ff6600;
+      color: #c0c0c0;
       font-family: Impact, sans-serif;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       text-transform: uppercase;
-      padding: 1rem 2.5rem;
-      margin: 1rem 0.8rem;
+      padding: 1.2rem 3rem;
+      margin: 1rem 1rem;
       cursor: pointer;
-      transition: all 0.15s;
-      box-shadow: 0 0 20px #ff00aa88;
+      transition: all 0.2s;
+      box-shadow: 0 0 15px #ff660088;
       position: relative;
       overflow: hidden;
     }
@@ -145,17 +139,17 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, #ff00aa44, transparent);
+      background: linear-gradient(90deg, transparent, #ff660044, transparent);
       transform: translateX(-100%);
-      transition: 0.4s;
+      transition: 0.5s;
     }
 
     button:hover::before { transform: translateX(100%); }
 
     button:hover {
-      transform: scale(1.08) rotate(2deg);
-      box-shadow: 0 0 40px #ff00aa, 0 0 80px #00ff9f;
-      filter: brightness(1.3);
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #ff6600, 0 0 60px #054500;
+      color: #ff6600;
     }
 
     button:disabled {
@@ -166,38 +160,29 @@
     }
 
     #qrCode {
-      margin: 2rem auto;
+      margin: 2.5rem auto;
       background: #000;
-      padding: 1rem;
-      border: 4px solid #9d00ff;
+      padding: 1.2rem;
+      border: 5px solid #6c8392;
       display: inline-block;
-      box-shadow: 0 0 30px #9d00ffff;
-    }
-
-    .warning {
-      background: rgba(255,0,51,0.15);
-      border: 3px solid #ff0033;
-      color: #ff99cc;
-      padding: 1.5rem;
-      margin: 2.5rem 0;
-      font-size: 1.2rem;
-      text-shadow: 0 0 10px #ff003388;
+      box-shadow: 0 0 25px #6c8392aa;
     }
 
     footer {
       text-align: center;
-      padding: 3rem 1rem;
+      padding: 4rem 1rem;
       color: #444;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       overflow: hidden;
       white-space: nowrap;
     }
 
     .marquee {
       display: inline-block;
-      animation: marquee 30s linear infinite;
+      animation: marquee 35s linear infinite;
       text-transform: uppercase;
-      letter-spacing: 4px;
+      letter-spacing: 6px;
+      color: #ff6600;
     }
 
     @keyframes marquee {
@@ -205,7 +190,6 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* Floating cursed elements */
     .floaters {
       position: fixed;
       inset: 0;
@@ -215,108 +199,110 @@
 
     .floater {
       position: absolute;
-      font-size: 4rem;
-      opacity: 0.08;
-      animation: drift 60s linear infinite;
-      color: #ff00aa;
-      text-shadow: 0 0 30px #ff00aa88;
+      font-size: 5rem;
+      opacity: 0.1;
+      animation: drift 80s linear infinite;
+      color: #ff6600;
+      text-shadow: 0 0 25px #ff6600aa;
     }
 
     @keyframes drift {
-      0% { transform: translate(-20vw, -20vh) rotate(0deg); }
-      100% { transform: translate(120vw, 120vh) rotate(720deg); }
+      0% { transform: translate(-30vw, -30vh) rotate(0deg); }
+      100% { transform: translate(130vw, 130vh) rotate(1080deg); }
     }
+
+    audio { display: none; }
   </style>
 </head>
 <body>
 
   <div class="floaters">
-    <div class="floater" style="top:10%;left:5%;animation-delay:0s;">EXTREME PEACE</div>
-    <div class="floater" style="top:30%;right:10%;animation-delay:15s; color:#00ff9f;">G3N3R4T10N4L_W</div>
-    <div class="floater" style="bottom:20%;left:15%;animation-delay:30s; color:#9d00ff;">STANKFAST™</div>
-    <div class="floater" style="top:60%;right:20%;animation-delay:45s; font-size:6rem;">☠</div>
+    <div class="floater" style="top:15%;left:8%;animation-delay:0s;">ALERT MODE</div>
+    <div class="floater" style="top:40%;right:12%;animation-delay:20s; color:#adc4ce;">META GEAR PRE-SALE</div>
+    <div class="floater" style="bottom:25%;left:18%;animation-delay:40s; color:#ff6600;">STANKFAST</div>
+    <div class="floater" style="top:55%;right:15%;animation-delay:60s; font-size:7rem;">[!]</div>
   </div>
 
+  <!-- Audio: dial-up for codec connect -->
+  <audio id="connectSound" src="https://freesound.org/data/previews/546/546450_11418785-lq.mp3"></audio>
+  <audio id="actionSound" src="https://www.soundjay.com/dial-up-modem-01.mp3"></audio> <!-- Glitchy modem beep -->
+
   <div class="container">
-    <h1 class="glitch">BORROW SOL FROM FRIENDS</h1>
+    <h1>SEND SOL FOR META GEAR PRE-SALE</h1>
     
-    <p style="font-size:1.4rem; margin:1.5rem 0;">
-      CONNECT YOUR PHANTOM WALLET<br>
-      SO YOUR "FRIENDS" CAN SEND YOU SOL.<br>
-      THIS PAGE ONLY SHOWS YOUR ADDRESS — NOTHING GETS DRAINED (YET).
+    <p>
+      ESTABLISH CONNECTION VIA PHANTOM WALLET<br>
+      TRANSMIT SOL TO SECURE YOUR SPOT IN THE DROP.<br>
+      TACTICAL ESPIONAGE DONATION — NO QUESTIONS ASKED.
     </p>
 
     <button id="connectBtn">CONNECT PHANTOM WALLET</button>
     
-    <div class="status" id="status">WAITING FOR CONNECTION... OR WHATEVER</div>
+    <div class="status" id="status">AWAITING TRANSMISSION... CODEC ONLINE</div>
     
     <div id="addressSection" style="display:none;">
       <div class="address-box" id="myAddress"></div>
       
-      <p style="margin:2rem 0 1rem; font-size:1.3rem;">SHARE THIS ADDRESS OR LET THEM SCAN THE QR — YOUR CALL, MY DUDE</p>
+      <p style="margin:2.5rem 0 1.2rem; font-size:1.6rem;">TRANSMIT THIS ADDRESS OR SCAN QR — ACCESS GRANTED ON CONFIRMATION</p>
       
       <div id="qrCode"></div>
       
-      <div style="margin-top:2rem;">
+      <div style="margin-top:2.5rem;">
         <button onclick="copyAddress()">COPY ADDRESS</button>
         <button id="phantomPayBtn" onclick="openInPhantom()" disabled>
-          OPEN IN PHANTOM (SOLANA PAY)
+          OPEN IN PHANTOM (SEND SOL - PRE-SALE)
         </button>
       </div>
-    </div>
-
-    <div class="warning">
-      ⚠️ THIS IS A TRUST-BASED IOU BETWEEN "FRIENDS".<br>
-      ONLY SHARE WITH PEOPLE YOU ACTUALLY KNOW.<br>
-      NO CONTRACTS, NO ENFORCEMENT — PURE VIBES AND POTENTIAL REGRET.
     </div>
   </div>
 
   <footer>
     <div class="marquee">
-      MADE BY STANKFAST • MARCH 2026 • NOT FINANCIAL ADVICE • THIS AIN'T ABOUT PEACE IN THE MIDDLE EAST IT'S ABOUT WORLD PEACE MY DUDE • EXTREME PEACE FOREVER • 
+      STANKFAST • MARCH 2026 • TACTICAL ESPIONAGE ACTION • META GEAR PRE-SALE • NOT FINANCIAL ADVICE • SOLIDARITY OR DEATH • 
     </div>
   </footer>
 
-  <!-- Scripts remain the same -->
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    // Your original script here — unchanged
     const connectBtn = document.getElementById('connectBtn');
     const status = document.getElementById('status');
     const addressSection = document.getElementById('addressSection');
     const myAddressDiv = document.getElementById('myAddress');
     const phantomPayBtn = document.getElementById('phantomPayBtn');
+    const connectSound = document.getElementById('connectSound');
+    const actionSound = document.getElementById('actionSound');
     let publicKey = null;
 
     async function connectWallet() {
       if (!window.solana || !window.solana.isPhantom) {
-        status.textContent = "PHANTOM NOT DETECTED. INSTALL IT → phantom.app";
+        status.textContent = "NO PHANTOM DETECTED. DEPLOY PHANTOM → phantom.app";
         return;
       }
       try {
         connectBtn.disabled = true;
         connectBtn.textContent = "CONNECTING...";
-        status.textContent = "REQUESTING CONNECTION... HOLD ON";
+        status.textContent = "CODEC HANDSHAKE... LISTEN FOR CONFIRMATION";
         const resp = await window.solana.connect({ onlyIfTrusted: false });
         publicKey = resp.publicKey.toString();
         myAddressDiv.textContent = publicKey;
-        status.textContent = "CONNECTED! YOUR FRIENDS CAN NOW SEND SOL HERE (TRUST OPTIONAL)";
+        status.textContent = "CONNECTION ESTABLISHED! TRANSMIT SOL TO JOIN THE PRE-SALE";
         addressSection.style.display = 'block';
         phantomPayBtn.disabled = false;
+        connectSound.currentTime = 0;
+        connectSound.play().catch(e => console.log("Codec audio blocked:", e));
         document.getElementById('qrCode').innerHTML = "";
         new QRCode(document.getElementById("qrCode"), {
           text: publicKey,
-          width: 220,
-          height: 220,
+          width: 240,
+          height: 240,
           colorDark: "#000000",
-          colorLight: "#00ff9f",  // neon green QR for cyber feel
+          colorLight: "#054500",  // MGS green QR
           correctLevel: QRCode.CorrectLevel.H
         });
       } catch (err) {
         console.error(err);
-        status.textContent = "CONNECTION FAILED: " + (err.message || "REJECTED BY USER");
+        status.textContent = "TRANSMISSION FAILED: " + (err.message || "REJECTED");
         connectBtn.disabled = false;
         connectBtn.textContent = "CONNECT PHANTOM WALLET";
       }
@@ -325,16 +311,20 @@
     function copyAddress() {
       if (!publicKey) return;
       navigator.clipboard.writeText(publicKey).then(() => {
-        status.textContent = "ADDRESS COPIED ✓ GO SEND IT TO YOUR FRIENDS";
-        setTimeout(() => { status.textContent = "CONNECTED! YOUR FRIENDS CAN NOW SEND SOL HERE."; }, 2200);
+        status.textContent = "ADDRESS COPIED ✓ TRANSMIT IMMEDIATELY";
+        actionSound.currentTime = 0;
+        actionSound.play().catch(e => console.log("Audio blocked:", e));
+        setTimeout(() => { status.textContent = "CONNECTION ESTABLISHED! TRANSMIT SOL TO JOIN THE PRE-SALE"; }, 2200);
       }).catch(() => {
-        status.textContent = "COPY FAILED — HIGHLIGHT MANUALLY LIKE AN ANIMAL";
+        status.textContent = "COPY FAILED — MANUAL EXTRACTION REQUIRED";
       });
     }
 
     function openInPhantom() {
       if (!publicKey) return;
-      const url = `https://phantom.app/ul/v1/transfer?to=${encodeURIComponent(publicKey)}&label=StankFast%20Loan`;
+      actionSound.currentTime = 0;
+      actionSound.play().catch(e => console.log("Audio blocked:", e));
+      const url = `https://phantom.app/ul/v1/transfer?to=${encodeURIComponent(publicKey)}&label=Meta%20Gear%20Pre-Sale&message=STANKFAST%20TACTICAL%20DONATION`;
       window.open(url, '_blank');
     }
 
@@ -345,16 +335,18 @@
           if (window.solana.isConnected) {
             publicKey = window.solana.publicKey.toString();
             myAddressDiv.textContent = publicKey;
-            status.textContent = "AUTO-CONNECTED FROM TRUSTED SESSION — NICE";
+            status.textContent = "AUTO-CONNECTED — THE SYSTEM RECOGNIZES YOU";
             addressSection.style.display = 'block';
             phantomPayBtn.disabled = false;
             connectBtn.style.display = 'none';
+            connectSound.currentTime = 0;
+            connectSound.play().catch(() => {});
             new QRCode(document.getElementById("qrCode"), {
               text: publicKey,
-              width: 220,
-              height: 220,
+              width: 240,
+              height: 240,
               colorDark: "#000000",
-              colorLight: "#00ff9f",
+              colorLight: "#054500",
               correctLevel: QRCode.CorrectLevel.H
             });
           }
