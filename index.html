@@ -232,7 +232,6 @@
         </div>
     </div>
 
-    <script src="vault.js"></script>
     <script>
         // Matrix Rain
         const canvas = document.getElementById('matrix');
@@ -264,8 +263,20 @@
         }
         setInterval(drawMatrix, 35);
 
+        // === GAME LOGIC ===
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
+        const keysList = document.getElementById('keys-list');
+        let foundKeys = [];
+
+        const keysDB = {
+            alpha: { id: 'ALPHA', code: 'GHOST47', found: false },
+            beta:  { id: 'BETA',  code: 'NEONSH4D0W', found: false },
+            gamma: { id: 'GAMMA', code: 'VOIDWALKER', found: false },
+            delta: { id: 'DELTA', code: 'K3YBR3ACH', found: false }
+        };
+
+        const privateKey = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
 
         function addLine(text, color = '#00ff41') {
             const line = document.createElement('div');
@@ -274,6 +285,87 @@
             termBody.appendChild(line);
             termBody.scrollTop = termBody.scrollHeight;
         }
+
+        function updateKeysUI() {
+            keysList.innerHTML = foundKeys.map(k => `🔑 ${k.id}: ${k.code}`).join('<br>');
+            document.getElementById('key-count').textContent = foundKeys.length;
+        }
+
+        const commandHandler = {
+            help: () => addLine('help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00'),
+            clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
+            ls: () => addLine('manifest.txt  encrypted_log.bin<br>Try ls -a', '#ffff00'),
+            'ls -a': () => {
+                addLine('.shadow_key  manifest.txt  .ghost_log');
+                if (!keysDB.beta.found) {
+                    keysDB.beta.found = true;
+                    foundKeys.push(keysDB.beta);
+                    updateKeysUI();
+                    addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
+                }
+            },
+            cat: (args) => {
+                if (args[0] === 'manifest.txt') addLine('ZERO DAY key extraction active.', '#ffaa00');
+                else if (args[0] === '.shadow_key') {
+                    addLine('Shadow protocol decoded...');
+                    if (!keysDB.gamma.found) {
+                        keysDB.gamma.found = true;
+                        foundKeys.push(keysDB.gamma);
+                        updateKeysUI();
+                        addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
+                    }
+                } else if (args[0] === '.ghost_log') {
+                    addLine('Ghost node transmission intercepted...', '#ffaa00');
+                    if (!keysDB.alpha.found) {
+                        keysDB.alpha.found = true;
+                        foundKeys.push(keysDB.alpha);
+                        updateKeysUI();
+                        addLine('KEY ALPHA UNLOCKED → GHOST47', '#ffff00');
+                    }
+                } else addLine('Access denied or file not found.', '#ff4444');
+            },
+            scan: () => {
+                addLine('Scanning darknet nodes for anomalies...', '#ff8800');
+                setTimeout(() => {
+                    addLine('Anomaly detected in ghost node.', '#ffff00');
+                    addLine('Try: cat .ghost_log', '#ffff00');
+                }, 1000);
+            },
+            exploit: () => {
+                addLine('Zero-day deployed...', '#ff0000');
+                setTimeout(() => {
+                    addLine('Firewall collapsed.', '#00ffff');
+                    if (!keysDB.delta.found) {
+                        keysDB.delta.found = true;
+                        foundKeys.push(keysDB.delta);
+                        updateKeysUI();
+                        addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
+                    }
+                }, 1400);
+            },
+            keys: () => addLine('Collected: ' + (foundKeys.map(k => k.id).join(', ') || 'None'), '#ffff00'),
+            submit: (args) => {
+                const code = args.join('').toUpperCase();
+                let success = false;
+                Object.values(keysDB).forEach(key => {
+                    if (!key.found && key.code === code) {
+                        key.found = true;
+                        foundKeys.push(key);
+                        updateKeysUI();
+                        addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
+                        success = true;
+                    }
+                });
+                if (!success) addLine('Invalid key.', '#ff4444');
+                
+                if (foundKeys.length >= 4) {
+                    setTimeout(() => {
+                        document.getElementById('success-screen').style.display = 'flex';
+                        addLine('ZERO DAY EXPLOIT SUCCESSFUL — PRIVATE KEY UNLOCKED', '#ffff00');
+                    }, 600);
+                }
+            }
+        };
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -285,8 +377,8 @@
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
 
-                if (window.commandHandler && typeof window.commandHandler[command] === 'function') {
-                    window.commandHandler[command](args);
+                if (commandHandler[command]) {
+                    commandHandler[command](args);
                 } else {
                     addLine('Unknown command. Type help.', '#ff6666');
                 }
@@ -294,6 +386,27 @@
             }
         });
 
+        // Private key copy
+        document.getElementById('private-key-box').addEventListener('click', () => {
+            const box = document.getElementById('private-key-box');
+            const notice = document.getElementById('copied-notice');
+
+            navigator.clipboard.writeText(privateKey).then(() => {
+                notice.style.opacity = '1';
+                box.textContent = "COPIED SUCCESSFULLY ✓";
+                box.style.borderColor = '#00ff00';
+                box.style.color = '#00ff00';
+                
+                setTimeout(() => {
+                    notice.style.opacity = '0';
+                    box.textContent = "CLICK TO REVEAL & COPY KEY";
+                    box.style.borderColor = '#ffff00';
+                    box.style.color = '#ffff00';
+                }, 2200);
+            });
+        });
+
+        // Boot
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
             setTimeout(() => addLine('Initiating zero day key extraction protocol...', '#ffff00'), 1300);
