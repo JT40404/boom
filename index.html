@@ -112,34 +112,44 @@
         
         .success {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 255, 65, 0.2);
-            display: none; align-items: center; justify-content: center;
-            flex-direction: column; z-index: 100; color: #00ff41;
-            text-shadow: 0 0 50px #00ff41; font-size: 3.8rem;
+            background: rgba(0, 255, 65, 0.25);
+            display: none; 
+            align-items: center; 
+            justify-content: center;
+            flex-direction: column; 
+            z-index: 100; 
+            color: #00ff41;
+            text-shadow: 0 0 50px #00ff41; 
+            font-size: 3.8rem;
             pointer-events: all;
         }
         .private-key {
             margin-top: 40px;
-            font-size: 1.65rem;
+            font-size: 1.55rem;
             background: #001100;
-            padding: 18px 30px;
-            border: 2px solid #ffff00;
+            padding: 20px 35px;
+            border: 3px solid #ffff00;
             color: #ffff00;
             word-break: break-all;
-            max-width: 85%;
+            max-width: 90%;
             text-align: center;
-            box-shadow: 0 0 30px #ffff00;
-            line-height: 1.4;
+            box-shadow: 0 0 40px #ffff00;
+            line-height: 1.5;
             cursor: pointer;
+            user-select: text;
             transition: all 0.3s;
         }
         .private-key:hover {
             background: #002200;
-            box-shadow: 0 0 40px #ffff00;
-            color: #ffffff;
+            box-shadow: 0 0 50px #ffff00;
+            transform: scale(1.02);
         }
-        .copied {
-            color: #00ff00 !important;
+        .copied-notice {
+            margin-top: 15px;
+            font-size: 1.6rem;
+            color: #00ff00;
+            opacity: 0;
+            transition: opacity 0.4s;
         }
     </style>
 </head>
@@ -190,18 +200,21 @@
     <div class="success" id="success-screen">
         <div>VAULT BREACHED</div>
         <div style="font-size:2.2rem; margin:25px 0;">YOU ARE NOW 1337</div>
-        <div style="margin-bottom:40px; font-size:1.6rem; text-align:center;">
+        <div style="margin-bottom:30px; font-size:1.6rem; text-align:center;">
             The SH4D0W core belongs to you, elite hacker.
         </div>
         
         <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
-        <div class="private-key" id="private-key-box" title="Click to copy private key">
+        
+        <div class="private-key" id="private-key-box" title="Click to copy the private key">
             4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC
         </div>
         
-        <div style="margin-top:50px; font-size:1.4rem; color:#ffaa00;">
+        <div id="copied-notice" class="copied-notice">✅ COPIED TO CLIPBOARD</div>
+        
+        <div style="margin-top:40px; font-size:1.4rem; color:#ffaa00;">
             Click the key above to copy it<br>
-            Do not share. Do not lose.
+            Keep it safe.
         </div>
     </div>
 
@@ -236,7 +249,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Terminal Logic
+        // Terminal + Game Logic
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -260,10 +273,7 @@
         const commandHandler = {
             help: () => addLine('help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00'),
             clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
-            ls: () => { 
-                addLine('manifest.txt  encrypted_log.bin'); 
-                addLine('Try <span style="color:#ffff00;">ls -a</span>', '#ffff00');
-            },
+            ls: () => addLine('manifest.txt  encrypted_log.bin<br>Try ls -a', '#ffff00'),
             'ls -a': () => {
                 addLine('.shadow_key  manifest.txt');
                 if (!keysDB.beta.found) {
@@ -316,9 +326,8 @@
                 if (foundKeys.length >= 4) {
                     setTimeout(() => {
                         document.getElementById('success-screen').style.display = 'flex';
-                        addLine('=======================================', '#00ffff');
                         addLine('VAULT FULLY BREACHED — PRIVATE KEY UNLOCKED', '#ffff00');
-                    }, 800);
+                    }, 600);
                 }
             }
         };
@@ -337,35 +346,49 @@
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
                 
-                if (commandHandler[command]) {
-                    commandHandler[command](args);
-                } else if (command === 'cat') {
-                    commandHandler.cat(args);
-                } else {
-                    addLine('Unknown command. Type help.', '#ff6666');
-                }
+                if (commandHandler[command]) commandHandler[command](args);
+                else if (command === 'cat') commandHandler.cat(args);
+                else addLine('Unknown command. Type help.', '#ff6666');
+                
                 input.value = '';
             }
         });
 
-        // Make private key clickable to copy
+        // ================== PRIVATE KEY COPY ==================
         const privateKeyBox = document.getElementById('private-key-box');
-        const privateKeyText = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
+        const copiedNotice = document.getElementById('copied-notice');
+        const privateKey = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
 
-        privateKeyBox.addEventListener('click', () => {
-            navigator.clipboard.writeText(privateKeyText).then(() => {
-                const originalText = privateKeyBox.textContent;
-                privateKeyBox.textContent = "COPIED TO CLIPBOARD ✓";
-                privateKeyBox.classList.add('copied');
+        privateKeyBox.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(privateKey);
+                
+                // Visual feedback
+                copiedNotice.style.opacity = '1';
+                privateKeyBox.style.borderColor = '#00ff00';
+                privateKeyBox.style.color = '#00ff00';
                 
                 setTimeout(() => {
-                    privateKeyBox.textContent = originalText;
-                    privateKeyBox.classList.remove('copied');
-                }, 2000);
-            });
+                    copiedNotice.style.opacity = '0';
+                    privateKeyBox.style.borderColor = '#ffff00';
+                    privateKeyBox.style.color = '#ffff00';
+                }, 2500);
+                
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = privateKey;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                copiedNotice.style.opacity = '1';
+                setTimeout(() => copiedNotice.style.opacity = '0', 2500);
+            }
         });
 
-        // Boot sequence
+        // Boot
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
             setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1300);
