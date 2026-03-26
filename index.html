@@ -234,7 +234,7 @@
 
     <script src="vault.js"></script>
     <script>
-        // Matrix Rain (unchanged)
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -264,11 +264,8 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Terminal (calls functions from vault.js)
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
-        const keysList = document.getElementById('keys-list');
-        let foundKeys = [];
 
         function addLine(text, color = '#00ff41') {
             const line = document.createElement('div');
@@ -277,10 +274,6 @@
             termBody.appendChild(line);
             termBody.scrollTop = termBody.scrollHeight;
         }
-
-        // These functions will be defined in vault.js
-        let commandHandler = {};
-        let updateKeys = () => {};
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -292,10 +285,12 @@
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
 
-                if (commandHandler[command]) {
-                    commandHandler[command](args);
+                if (window.commandHandler && window.commandHandler[command]) {
+                    window.commandHandler[command](args);
                 } else if (command === 'cat') {
-                    // handled in vault.js
+                    if (window.commandHandler && window.commandHandler.cat) {
+                        window.commandHandler.cat(args);
+                    }
                 } else {
                     addLine('Unknown command. Type help.', '#ff6666');
                 }
