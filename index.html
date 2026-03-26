@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SH4D0W_VAULT // KEY HUNT v0.8.7</title>
+    <title>ZERO DAY KEY HUNT // v0.8.7</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
         
@@ -172,7 +172,7 @@
     <canvas id="matrix"></canvas>
     
     <div class="overlay">
-        <!-- Updated Header with Solscan Link -->
+        <!-- Header with Solscan Link -->
         <div class="header">
             <div class="wallet-header">
                 <a href="https://solscan.io/account/MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn" 
@@ -180,7 +180,7 @@
                     MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn
                 </a>
             </div>
-            <div>SH4D0W_VAULT <span class="glitch">KEY EXTRACTION PROTOCOL</span></div>
+            <div>ZERO DAY <span class="glitch">KEY HUNT</span></div>
             <div>INTRUSION ACTIVE • NODE 47 • TOR ROUTED</div>
         </div>
 
@@ -191,7 +191,7 @@
                 <div style="color:#ff0044;">LIVE</div>
             </div>
             <div class="term-body" id="term-body">
-                <div>Welcome to SH4D0W_VAULT key extraction system.</div>
+                <div>Welcome to ZERO DAY key extraction system.</div>
                 <div>Type <span style="color:#ffff00;">help</span> for commands.</div>
             </div>
             <div class="input-line">
@@ -217,12 +217,12 @@
 
     <div class="scanline"></div>
 
-    <!-- Success Screen (with copyable private key) -->
+    <!-- Success Screen -->
     <div class="success" id="success-screen">
         <div>VAULT BREACHED</div>
         <div style="font-size:2.2rem; margin:25px 0;">YOU ARE NOW 1337</div>
         <div style="margin-bottom:30px; font-size:1.6rem; text-align:center;">
-            The SH4D0W core belongs to you, elite hacker.
+            Zero day exploit successful.
         </div>
         
         <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
@@ -240,10 +240,7 @@
     </div>
 
     <script>
-        // (Matrix rain, terminal logic, copy functionality, and boot sequence remain the same as the previous version)
-        // ... [The full script from the previous message is included here - it's unchanged]
-
-        // Matrix Rain (unchanged)
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -273,13 +270,143 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Terminal logic, key handling, and private key copy code (identical to last version)
-        // ... [omitted for brevity - copy from the previous full code if needed]
+        // Terminal Logic
+        const termBody = document.getElementById('term-body');
+        const input = document.getElementById('command-input');
+        const keysList = document.getElementById('keys-list');
+        let foundKeys = [];
+
+        const keysDB = {
+            alpha: { id: 'ALPHA', code: 'GHOST47', found: false },
+            beta: { id: 'BETA', code: 'NEONSH4D0W', found: false },
+            gamma: { id: 'GAMMA', code: 'VOIDWALKER', found: false },
+            delta: { id: 'DELTA', code: 'K3YBR3ACH', found: false }
+        };
+
+        function addLine(text, color = '#00ff41') {
+            const line = document.createElement('div');
+            line.style.color = color;
+            line.innerHTML = text;
+            termBody.appendChild(line);
+            termBody.scrollTop = termBody.scrollHeight;
+        }
+
+        const commandHandler = {
+            help: () => addLine('help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00'),
+            clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
+            ls: () => addLine('manifest.txt  encrypted_log.bin<br>Try ls -a', '#ffff00'),
+            'ls -a': () => {
+                addLine('.shadow_key  manifest.txt');
+                if (!keysDB.beta.found) {
+                    keysDB.beta.found = true;
+                    foundKeys.push(keysDB.beta);
+                    updateKeys();
+                    addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
+                }
+            },
+            cat: (args) => {
+                if (args[0] === 'manifest.txt') addLine('ZERO DAY key extraction active.', '#ffaa00');
+                else if (args[0] === '.shadow_key') {
+                    addLine('Shadow protocol decoded...');
+                    if (!keysDB.gamma.found) {
+                        keysDB.gamma.found = true;
+                        foundKeys.push(keysDB.gamma);
+                        updateKeys();
+                        addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
+                    }
+                } else addLine('Access denied.', '#ff4444');
+            },
+            scan: () => addLine('Scanning... Hint: check page source', '#ffff00'),
+            exploit: () => {
+                addLine('Zero-day deployed...', '#ff0000');
+                setTimeout(() => {
+                    addLine('Firewall down.', '#00ffff');
+                    if (!keysDB.delta.found) {
+                        keysDB.delta.found = true;
+                        foundKeys.push(keysDB.delta);
+                        updateKeys();
+                        addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
+                    }
+                }, 1400);
+            },
+            keys: () => addLine('Collected: ' + (foundKeys.map(k => k.id).join(', ') || 'None'), '#ffff00'),
+            submit: (args) => {
+                const code = args.join('').toUpperCase();
+                let success = false;
+                Object.values(keysDB).forEach(key => {
+                    if (!key.found && key.code === code) {
+                        key.found = true;
+                        foundKeys.push(key);
+                        updateKeys();
+                        addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
+                        success = true;
+                    }
+                });
+                if (!success) addLine('Invalid key.', '#ff4444');
+                
+                if (foundKeys.length >= 4) {
+                    setTimeout(() => {
+                        document.getElementById('success-screen').style.display = 'flex';
+                        addLine('ZERO DAY EXPLOIT SUCCESSFUL — PRIVATE KEY UNLOCKED', '#ffff00');
+                    }, 600);
+                }
+            }
+        };
+
+        function updateKeys() {
+            keysList.innerHTML = foundKeys.map(k => `🔑 ${k.id}: ${k.code}`).join('<br>');
+            document.getElementById('key-count').textContent = foundKeys.length;
+        }
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = input.value.trim();
+                if (!cmd) return;
+                addLine(`root@shadowcore:~$ ${cmd}`);
+                const parts = cmd.split(' ');
+                const command = parts[0].toLowerCase();
+                const args = parts.slice(1);
+                
+                if (commandHandler[command]) commandHandler[command](args);
+                else if (command === 'cat') commandHandler.cat(args);
+                else addLine('Unknown command. Type help.', '#ff6666');
+                input.value = '';
+            }
+        });
+
+        // Private Key Copy
+        const privateKeyBox = document.getElementById('private-key-box');
+        const copiedNotice = document.getElementById('copied-notice');
+        const privateKey = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
+
+        privateKeyBox.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(privateKey);
+                copiedNotice.style.opacity = '1';
+                privateKeyBox.style.borderColor = '#00ff00';
+                privateKeyBox.style.color = '#00ff00';
+                
+                setTimeout(() => {
+                    copiedNotice.style.opacity = '0';
+                    privateKeyBox.style.borderColor = '#ffff00';
+                    privateKeyBox.style.color = '#ffff00';
+                }, 2500);
+            } catch (err) {
+                const textArea = document.createElement('textarea');
+                textArea.value = privateKey;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                copiedNotice.style.opacity = '1';
+                setTimeout(() => copiedNotice.style.opacity = '0', 2500);
+            }
+        });
 
         // Boot
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
-            setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1300);
+            setTimeout(() => addLine('Initiating zero day key extraction protocol...', '#ffff00'), 1300);
             input.focus();
         };
     </script>
