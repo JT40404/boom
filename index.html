@@ -17,32 +17,7 @@
         }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; }
 
-        .marquee {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: #220000;
-            border-bottom: 2px solid #ff0044;
-            padding: 6px 0;
-            color: #ff4444;
-            font-size: 1.35rem;
-            white-space: nowrap;
-            overflow: hidden;
-            z-index: 50;
-            box-shadow: 0 0 15px #ff0044;
-        }
-        .marquee-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 25s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .overlay { position: fixed; top: 40px; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
         
         .header {
             background: rgba(0, 20, 0, 0.9);
@@ -95,31 +70,7 @@
             padding: 15px; width: 240px; z-index: 20;
         }
         
-        .mooning-graph {
-            position: absolute;
-            top: 80px;
-            right: 30px;
-            width: 280px;
-            height: 140px;
-            background: rgba(0, 15, 0, 0.9);
-            border: 2px solid #00ff41;
-            box-shadow: 0 0 20px #00ff41;
-            z-index: 15;
-            overflow: hidden;
-        }
-        .graph-header {
-            background: #001100;
-            padding: 4px 10px;
-            font-size: 1.1rem;
-            color: #ffff00;
-            border-bottom: 1px solid #00ff41;
-            text-align: center;
-        }
-        .graph-canvas {
-            width: 100%;
-            height: calc(100% - 28px);
-        }
-        
+        /* Clean Donate Box - Bottom Right */
         .donate-box {
             position: absolute;
             bottom: 20px;
@@ -170,26 +121,20 @@
         }
         .private-key {
             margin-top: 40px;
-            font-size: 1.8rem;
+            font-size: 1.65rem;
             background: #001100;
-            padding: 15px 30px;
+            padding: 18px 30px;
             border: 2px solid #ffff00;
             color: #ffff00;
             word-break: break-all;
-            max-width: 80%;
+            max-width: 85%;
             text-align: center;
             box-shadow: 0 0 30px #ffff00;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
-    <!-- Scrolling Marquee -->
-    <div class="marquee">
-        <div class="marquee-content">
-            WARNING: MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn • MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn • MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn • 
-        </div>
-    </div>
-
     <canvas id="matrix"></canvas>
     
     <div class="overlay">
@@ -197,12 +142,6 @@
             <div>SH4D0W_VAULT <span class="glitch">KEY EXTRACTION PROTOCOL</span></div>
             <div>INTRUSION ACTIVE • NODE 47 • TOR ROUTED</div>
             <div id="status">STATUS: COMPROMISED</div>
-        </div>
-
-        <!-- Mooning Graph -->
-        <div class="mooning-graph">
-            <div class="graph-header">/// MEME MOON PROTOCOL ///</div>
-            <canvas id="graph-canvas" class="graph-canvas"></canvas>
         </div>
 
         <!-- Terminal -->
@@ -247,18 +186,19 @@
         </div>
         
         <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
-        <div class="private-key" id="private-key-display">
+        <div class="private-key">
             4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC
         </div>
         
         <div style="margin-top:50px; font-size:1.4rem; color:#ffaa00;">
-            Do not share. Do not lose.<br>
+            Do not share.<br>
+            Do not lose.<br>
             You earned this.
         </div>
     </div>
 
     <script>
-        // Matrix Rain
+        // Matrix Rain Background
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -288,46 +228,6 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Mooning Graph
-        const graphCanvas = document.getElementById('graph-canvas');
-        const gctx = graphCanvas.getContext('2d');
-        graphCanvas.width = 280;
-        graphCanvas.height = 112;
-        let points = [];
-        let time = 0;
-
-        function drawGraph() {
-            gctx.fillStyle = 'rgba(0, 20, 0, 0.85)';
-            gctx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
-
-            gctx.strokeStyle = 'rgba(0, 255, 65, 0.15)';
-            gctx.lineWidth = 1;
-            for (let i = 1; i < 5; i++) {
-                gctx.beginPath();
-                gctx.moveTo(0, i * 28);
-                gctx.lineTo(graphCanvas.width, i * 28);
-                gctx.stroke();
-            }
-
-            time++;
-            const newY = graphCanvas.height - 25 - Math.random() * 65 - (time % 35) * 2.2;
-            points.push(newY);
-            if (points.length > 85) points.shift();
-
-            gctx.strokeStyle = '#00ff41';
-            gctx.lineWidth = 3.5;
-            gctx.shadowBlur = 20;
-            gctx.shadowColor = '#00ff41';
-            gctx.beginPath();
-            for (let i = 0; i < points.length; i++) {
-                const x = (i / points.length) * graphCanvas.width;
-                if (i === 0) gctx.moveTo(x, points[i]);
-                else gctx.lineTo(x, points[i]);
-            }
-            gctx.stroke();
-        }
-        setInterval(drawGraph, 55);
-
         // Terminal Logic
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
@@ -354,12 +254,14 @@
             clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
             ls: () => { 
                 addLine('manifest.txt  encrypted_log.bin'); 
-                addLine('Try ls -a', '#ffff00');
+                addLine('Try <span style="color:#ffff00;">ls -a</span>', '#ffff00');
             },
             'ls -a': () => {
                 addLine('.shadow_key  manifest.txt');
                 if (!keysDB.beta.found) {
-                    keysDB.beta.found = true; foundKeys.push(keysDB.beta); updateKeys();
+                    keysDB.beta.found = true;
+                    foundKeys.push(keysDB.beta);
+                    updateKeys();
                     addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
                 }
             },
@@ -368,7 +270,9 @@
                 else if (args[0] === '.shadow_key') {
                     addLine('Shadow protocol decoded...');
                     if (!keysDB.gamma.found) {
-                        keysDB.gamma.found = true; foundKeys.push(keysDB.gamma); updateKeys();
+                        keysDB.gamma.found = true;
+                        foundKeys.push(keysDB.gamma);
+                        updateKeys();
                         addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
                     }
                 } else addLine('Access denied.', '#ff4444');
@@ -379,7 +283,9 @@
                 setTimeout(() => {
                     addLine('Firewall down.', '#00ffff');
                     if (!keysDB.delta.found) {
-                        keysDB.delta.found = true; foundKeys.push(keysDB.delta); updateKeys();
+                        keysDB.delta.found = true;
+                        foundKeys.push(keysDB.delta);
+                        updateKeys();
                         addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
                     }
                 }, 1400);
@@ -390,13 +296,16 @@
                 let success = false;
                 Object.values(keysDB).forEach(key => {
                     if (!key.found && key.code === code) {
-                        key.found = true; foundKeys.push(key); updateKeys();
+                        key.found = true;
+                        foundKeys.push(key);
+                        updateKeys();
                         addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
                         success = true;
                     }
                 });
                 if (!success) addLine('Invalid key.', '#ff4444');
                 
+                // Win condition - reveal private key
                 if (foundKeys.length >= 4) {
                     setTimeout(() => {
                         document.getElementById('success-screen').style.display = 'flex';
@@ -420,14 +329,19 @@
                 const parts = cmd.split(' ');
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
-                if (commandHandler[command]) commandHandler[command](args);
-                else if (command === 'cat') commandHandler.cat(args);
-                else addLine('Unknown command. Type help.', '#ff6666');
+                
+                if (commandHandler[command]) {
+                    commandHandler[command](args);
+                } else if (command === 'cat') {
+                    commandHandler.cat(args);
+                } else {
+                    addLine('Unknown command. Type help.', '#ff6666');
+                }
                 input.value = '';
             }
         });
 
-        // Boot
+        // Boot sequence
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
             setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1300);
