@@ -44,10 +44,7 @@ const commandHandler = {
             }
         } else addLine('Access denied or file not found.', '#ff4444');
     },
-    scan: () => {
-        addLine('Scanning darknet nodes for anomalies...', '#ff8800');
-        // No more "check page source" hint
-    },
+    scan: () => addLine('Scanning darknet nodes for anomalies...', '#ff8800'),
     exploit: () => {
         addLine('Zero-day deployed...', '#ff0000');
         setTimeout(() => {
@@ -89,7 +86,7 @@ function updateKeysUI() {
     document.getElementById('key-count').textContent = foundKeys.length;
 }
 
-// Make available to index.html
+// Expose to index.html
 window.commandHandler = commandHandler;
 window.updateKeysUI = updateKeysUI;
 
