@@ -70,7 +70,7 @@
             padding: 15px; width: 240px; z-index: 20;
         }
         
-        /* Improved Donate Box with your QR code */
+        /* Clean Cyberpunk Donate Box */
         .donate-box {
             position: absolute; bottom: 20px; left: 20px;
             background: rgba(0, 10, 0, 0.96);
@@ -162,17 +162,17 @@
             <div id="keys-list" style="margin-top:8px; font-size:1.2rem; line-height:1.4;"></div>
         </div>
 
-        <!-- Donate Box with your new QR code -->
+        <!-- Donate Box with your latest QR code -->
         <div class="donate-box">
             <div class="donate-title">/// DONATE FOR FUTURE PROJECTS ///</div>
             <div style="margin-bottom:10px; font-size:1.25rem;">Keep the shadows alive</div>
             
             <div class="qr-container">
-                <img src="https://ibb.co/LXNkVQYb" 
-                     alt="Solana Donate QR" id="qr-code">
+                <img src="https://i.ibb.co/W4VxmDGq/image-1.jpg" 
+                     alt="Solana Donate QR Code">
             </div>
             
-            <div class="wallet-address" id="wallet-address" title="Click to copy wallet address">
+            <div class="wallet-address" id="wallet-address" title="Click to copy">
                 METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo
             </div>
             <div style="margin-top:10px; font-size:1.05rem; color:#ffaa00; text-align:center;">
@@ -194,7 +194,7 @@
     </div>
 
     <script>
-        // Matrix Rain Background
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -224,7 +224,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Terminal (full logic from previous version)
+        // Terminal Logic
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -250,35 +250,44 @@
             clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
             ls: () => { 
                 addLine('manifest.txt  encrypted_log.bin'); 
-                addLine('Try ls -a', '#ffff00');
+                addLine('Try <span style="color:#ffff00;">ls -a</span>', '#ffff00');
             },
             'ls -a': () => {
                 addLine('.shadow_key  manifest.txt');
                 if (!keysDB.beta.found) {
-                    keysDB.beta.found = true; foundKeys.push(keysDB.beta); updateKeys();
+                    keysDB.beta.found = true;
+                    foundKeys.push(keysDB.beta);
+                    updateKeys();
                     addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
                 }
             },
             cat: (args) => {
-                if (args[0] === 'manifest.txt') addLine('SH4D0W_VAULT key extraction active.', '#ffaa00');
-                else if (args[0] === '.shadow_key') {
+                if (args[0] === 'manifest.txt') {
+                    addLine('SH4D0W_VAULT key extraction active.', '#ffaa00');
+                } else if (args[0] === '.shadow_key') {
                     addLine('Shadow protocol decoded...');
                     if (!keysDB.gamma.found) {
-                        keysDB.gamma.found = true; foundKeys.push(keysDB.gamma); updateKeys();
+                        keysDB.gamma.found = true;
+                        foundKeys.push(keysDB.gamma);
+                        updateKeys();
                         addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
                     }
-                } else addLine('Access denied.', '#ff4444');
+                } else {
+                    addLine('Access denied.', '#ff4444');
+                }
             },
             scan: () => {
                 addLine('Scanning darknet nodes...', '#ff8800');
-                setTimeout(() => addLine('Hint: check page source', '#ffff00'), 800);
+                setTimeout(() => addLine('Hint: check page source (Ctrl+U)', '#ffff00'), 800);
             },
             exploit: () => {
                 addLine('Deploying zero-day exploit...', '#ff0000');
                 setTimeout(() => {
                     addLine('Firewall collapsed.', '#00ffff');
                     if (!keysDB.delta.found) {
-                        keysDB.delta.found = true; foundKeys.push(keysDB.delta); updateKeys();
+                        keysDB.delta.found = true;
+                        foundKeys.push(keysDB.delta);
+                        updateKeys();
                         addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
                     }
                 }, 1500);
@@ -289,14 +298,18 @@
                 let success = false;
                 Object.values(keysDB).forEach(key => {
                     if (!key.found && key.code === code) {
-                        key.found = true; foundKeys.push(key); updateKeys();
+                        key.found = true;
+                        foundKeys.push(key);
+                        updateKeys();
                         addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
                         success = true;
                     }
                 });
-                if (!success) addLine('Invalid key.', '#ff4444');
+                if (!success) addLine('Invalid or already claimed.', '#ff4444');
                 if (foundKeys.length >= 4) {
-                    setTimeout(() => document.getElementById('success-screen').style.display = 'flex', 600);
+                    setTimeout(() => {
+                        document.getElementById('success-screen').style.display = 'flex';
+                    }, 600);
                 }
             }
         };
@@ -314,30 +327,40 @@
                 const parts = cmd.split(' ');
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
-                if (commandHandler[command]) commandHandler[command](args);
-                else if (command === 'cat') commandHandler.cat(args);
-                else addLine('Unknown command. Type help.', '#ff6666');
+                if (commandHandler[command]) {
+                    commandHandler[command](args);
+                } else if (command === 'cat') {
+                    commandHandler.cat(args);
+                } else {
+                    addLine('Unknown command. Type help.', '#ff6666');
+                }
                 input.value = '';
             }
         });
 
-        // Copy wallet
+        // Click to copy wallet address
         document.getElementById('wallet-address').addEventListener('click', () => {
             const addr = "METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo";
             navigator.clipboard.writeText(addr).then(() => {
                 const el = document.getElementById('wallet-address');
-                const orig = el.textContent;
-                el.textContent = "COPIED ✓";
+                const originalText = el.textContent;
+                el.textContent = "COPIED TO CLIPBOARD ✓";
                 el.style.color = "#00ff00";
-                setTimeout(() => { el.textContent = orig; el.style.color = "#ffdd88"; }, 1600);
+                setTimeout(() => {
+                    el.textContent = originalText;
+                    el.style.color = "#ffdd88";
+                }, 1600);
             });
         });
 
-        // Boot sequence
+        // Boot sequence + hidden key hint
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
             setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1300);
             input.focus();
+            
+            console.log('%c🔥 SH4D0W_VAULT KEY ALPHA: GHOST47 🔥\nDonate link active.', 
+                'color:#00ff41; font-family:monospace; background:#001100; padding:4px 8px;');
         };
     </script>
 </body>
