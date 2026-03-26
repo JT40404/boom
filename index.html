@@ -14,7 +14,6 @@
             font-family: 'VT323', monospace;
             overflow: hidden;
             height: 100vh;
-            image-rendering: pixelated;
         }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; }
         
@@ -39,109 +38,94 @@
         
         .terminal {
             position: absolute;
-            top: 70px;
-            left: 50%;
+            top: 70px; left: 50%;
             transform: translateX(-50%);
-            width: 820px;
-            height: 520px;
+            width: 820px; height: 520px;
             background: rgba(0, 15, 0, 0.95);
             border: 3px solid #00ff41;
             box-shadow: 0 0 30px #00ff41;
             z-index: 10;
             pointer-events: all;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
         .term-header {
             background: #001100;
             padding: 5px 15px;
             border-bottom: 2px solid #00ff41;
-            display: flex;
-            justify-content: space-between;
+            display: flex; justify-content: space-between;
         }
         .term-body {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            font-size: 1.3rem;
-            line-height: 1.4;
+            flex: 1; padding: 15px; overflow-y: auto;
+            font-size: 1.3rem; line-height: 1.4;
         }
-        .input-line {
-            display: flex;
-            margin-top: 5px;
-        }
+        .input-line { display: flex; margin-top: 5px; }
         input {
-            background: transparent;
-            border: none;
-            color: #00ff41;
-            font-family: inherit;
-            font-size: inherit;
-            flex: 1;
-            outline: none;
+            background: transparent; border: none; color: #00ff41;
+            font-family: inherit; font-size: inherit; flex: 1; outline: none;
         }
         
         .key-inventory {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,20,0,0.9);
-            border: 2px solid #00ff41;
-            padding: 15px;
-            z-index: 20;
-            width: 240px;
+            position: absolute; bottom: 20px; right: 20px;
+            background: rgba(0,20,0,0.9); border: 2px solid #00ff41;
+            padding: 15px; width: 240px; z-index: 20;
         }
         
+        /* Improved Donate Box with your QR code */
         .donate-box {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 10, 0, 0.95);
+            position: absolute; bottom: 20px; left: 20px;
+            background: rgba(0, 10, 0, 0.96);
             border: 2px solid #ffaa00;
-            padding: 12px 18px;
-            width: 320px;
+            padding: 18px;
+            width: 360px;
             z-index: 20;
-            font-size: 1.25rem;
-            line-height: 1.5;
+            box-shadow: 0 0 25px #ffaa00;
         }
-        .donate-box .title {
-            color: #ffaa00;
-            margin-bottom: 8px;
-            text-shadow: 0 0 10px #ffaa00;
+        .donate-title {
+            color: #ffaa00; font-size: 1.45rem; margin-bottom: 10px;
+            text-shadow: 0 0 12px #ffaa00;
         }
-        .wallet {
+        .qr-container {
+            background: #0a0a0a;
+            padding: 14px;
+            border: 3px solid #00ff41;
+            display: flex; justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: inset 0 0 15px rgba(0,255,65,0.3);
+        }
+        .qr-container img {
+            width: 195px; height: 195px;
+            image-rendering: crisp-edges;
+        }
+        .wallet-address {
             background: #001100;
-            padding: 8px;
-            word-break: break-all;
-            font-size: 1.1rem;
+            padding: 12px;
             border: 1px dashed #ffaa00;
-            margin-top: 6px;
+            font-size: 1.18rem;
+            word-break: break-all;
             color: #ffdd88;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .wallet-address:hover {
+            background: #002200;
+            box-shadow: 0 0 20px #ffaa00;
+            color: #ffff00;
         }
         .scanline {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, transparent 50%, rgba(0,255,65,0.05) 50%);
             background-size: 100% 6px;
             animation: scan 4s linear infinite;
-            z-index: 3;
-            pointer-events: none;
+            z-index: 3; pointer-events: none;
         }
         @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
         
         .success {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 255, 65, 0.15);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 100;
-            color: #00ff41;
-            text-shadow: 0 0 40px #00ff41;
-            font-size: 4rem;
+            display: none; align-items: center; justify-content: center;
+            flex-direction: column; z-index: 100; color: #00ff41;
+            text-shadow: 0 0 40px #00ff41; font-size: 4rem;
             pointer-events: none;
         }
     </style>
@@ -165,7 +149,6 @@
             <div class="term-body" id="term-body">
                 <div>Welcome to SH4D0W_VAULT key extraction system.</div>
                 <div>Type <span style="color:#ffff00;">help</span> for commands.</div>
-                <div id="output"></div>
             </div>
             <div class="input-line">
                 <span>root@shadowcore:~$ </span>
@@ -179,15 +162,21 @@
             <div id="keys-list" style="margin-top:8px; font-size:1.2rem; line-height:1.4;"></div>
         </div>
 
-        <!-- Donate Box -->
+        <!-- Donate Box with your new QR code -->
         <div class="donate-box">
-            <div class="title">/// DONATE FOR FUTURE PROJECTS ///</div>
-            <div>If you enjoyed the breach and want more darknet toys...</div>
-            <div class="wallet" id="wallet-address">
+            <div class="donate-title">/// DONATE FOR FUTURE PROJECTS ///</div>
+            <div style="margin-bottom:10px; font-size:1.25rem;">Keep the shadows alive</div>
+            
+            <div class="qr-container">
+                <img src="https://ibb.co/LXNkVQYb" 
+                     alt="Solana Donate QR" id="qr-code">
+            </div>
+            
+            <div class="wallet-address" id="wallet-address" title="Click to copy wallet address">
                 METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo
             </div>
-            <div style="margin-top:8px; font-size:1rem; color:#ffaa00;">
-                Solana • Copy & send sats (or whatever you call them now)
+            <div style="margin-top:10px; font-size:1.05rem; color:#ffaa00; text-align:center;">
+                Solana • Click address to copy
             </div>
         </div>
     </div>
@@ -205,10 +194,9 @@
     </div>
 
     <script>
-        // Matrix Rain
+        // Matrix Rain Background
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
-        
         let width, height;
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -227,18 +215,16 @@
             ctx.fillRect(0, 0, width, height);
             ctx.fillStyle = '#00ff41';
             ctx.font = `${fontSize}px monospace`;
-
             for (let i = 0; i < drops.length; i++) {
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
                 if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
         setInterval(drawMatrix, 35);
 
-        // Terminal Logic
+        // Terminal (full logic from previous version)
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -260,52 +246,39 @@
         }
 
         const commandHandler = {
-            help: () => {
-                addLine('Available commands: help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00');
-                addLine('Pro tip: check page source for hidden keys', '#ffaa00');
-            },
-            clear: () => { termBody.innerHTML = '<div>Terminal wiped.</div>'; },
+            help: () => addLine('help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00'),
+            clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
             ls: () => { 
                 addLine('manifest.txt  encrypted_log.bin'); 
-                addLine('Try <span style="color:#ffff00;">ls -a</span>', '#ffff00');
+                addLine('Try ls -a', '#ffff00');
             },
             'ls -a': () => {
                 addLine('.shadow_key  manifest.txt');
                 if (!keysDB.beta.found) {
-                    keysDB.beta.found = true;
-                    foundKeys.push(keysDB.beta);
-                    updateKeys();
+                    keysDB.beta.found = true; foundKeys.push(keysDB.beta); updateKeys();
                     addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
                 }
             },
             cat: (args) => {
-                if (args[0] === 'manifest.txt') {
-                    addLine('SH4D0W_VAULT key extraction active.');
-                    addLine('Collect all 4 keys to own the core.', '#ffaa00');
-                } else if (args[0] === '.shadow_key') {
+                if (args[0] === 'manifest.txt') addLine('SH4D0W_VAULT key extraction active.', '#ffaa00');
+                else if (args[0] === '.shadow_key') {
                     addLine('Shadow protocol decoded...');
                     if (!keysDB.gamma.found) {
-                        keysDB.gamma.found = true;
-                        foundKeys.push(keysDB.gamma);
-                        updateKeys();
+                        keysDB.gamma.found = true; foundKeys.push(keysDB.gamma); updateKeys();
                         addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
                     }
-                } else {
-                    addLine('File not found or access denied.', '#ff4444');
-                }
+                } else addLine('Access denied.', '#ff4444');
             },
             scan: () => {
                 addLine('Scanning darknet nodes...', '#ff8800');
-                setTimeout(() => addLine('Hint: View page source (Ctrl+U)', '#ffff00'), 1000);
+                setTimeout(() => addLine('Hint: check page source', '#ffff00'), 800);
             },
             exploit: () => {
-                addLine('Deploying zero-day...', '#ff0000');
+                addLine('Deploying zero-day exploit...', '#ff0000');
                 setTimeout(() => {
-                    addLine('Firewall down.', '#00ffff');
+                    addLine('Firewall collapsed.', '#00ffff');
                     if (!keysDB.delta.found) {
-                        keysDB.delta.found = true;
-                        foundKeys.push(keysDB.delta);
-                        updateKeys();
+                        keysDB.delta.found = true; foundKeys.push(keysDB.delta); updateKeys();
                         addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
                     }
                 }, 1500);
@@ -316,20 +289,14 @@
                 let success = false;
                 Object.values(keysDB).forEach(key => {
                     if (!key.found && key.code === code) {
-                        key.found = true;
-                        foundKeys.push(key);
-                        updateKeys();
+                        key.found = true; foundKeys.push(key); updateKeys();
                         addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
                         success = true;
                     }
                 });
-                if (!success) addLine('Invalid or already claimed.', '#ff4444');
-
+                if (!success) addLine('Invalid key.', '#ff4444');
                 if (foundKeys.length >= 4) {
-                    setTimeout(() => {
-                        document.getElementById('success-screen').style.display = 'flex';
-                        addLine('VAULT FULLY BREACHED. YOU WIN.', '#00ffff');
-                    }, 800);
+                    setTimeout(() => document.getElementById('success-screen').style.display = 'flex', 600);
                 }
             }
         };
@@ -343,52 +310,35 @@
             if (e.key === 'Enter') {
                 const cmd = input.value.trim();
                 if (!cmd) return;
-                
                 addLine(`root@shadowcore:~$ ${cmd}`);
-                
                 const parts = cmd.split(' ');
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
-                
-                if (commandHandler[command]) {
-                    commandHandler[command](args);
-                } else if (command === 'cat') {
-                    commandHandler.cat(args);
-                } else {
-                    addLine('Unknown command. Type help.', '#ff6666');
-                }
-                
+                if (commandHandler[command]) commandHandler[command](args);
+                else if (command === 'cat') commandHandler.cat(args);
+                else addLine('Unknown command. Type help.', '#ff6666');
                 input.value = '';
             }
         });
 
-        // Boot + hidden key
-        window.onload = () => {
-            setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 600);
-            setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1400);
-            input.focus();
-            
-            console.log('%c🔥 SH4D0W_VAULT KEY ALPHA: GHOST47 🔥\nDonate if you want more: METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo', 
-                'color:#00ff41; font-family:monospace; background:#001100; padding:4px 8px;');
-        };
-
-        // Make wallet clickable to copy
+        // Copy wallet
         document.getElementById('wallet-address').addEventListener('click', () => {
             const addr = "METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo";
             navigator.clipboard.writeText(addr).then(() => {
-                const orig = document.getElementById('wallet-address').innerHTML;
-                document.getElementById('wallet-address').innerHTML = "COPIED TO CLIPBOARD ✓";
-                setTimeout(() => {
-                    document.getElementById('wallet-address').innerHTML = orig;
-                }, 2000);
+                const el = document.getElementById('wallet-address');
+                const orig = el.textContent;
+                el.textContent = "COPIED ✓";
+                el.style.color = "#00ff00";
+                setTimeout(() => { el.textContent = orig; el.style.color = "#ffdd88"; }, 1600);
             });
         });
+
+        // Boot sequence
+        window.onload = () => {
+            setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
+            setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1300);
+            input.focus();
+        };
     </script>
-    
-    <!-- 
-        SECRET KEY ALPHA: GHOST47 
-        You found the hidden comment, elite hacker.
-        Type: submit GHOST47 in the terminal to claim it.
-    -->
 </body>
 </html>
