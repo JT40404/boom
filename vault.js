@@ -33,7 +33,7 @@ const commandHandler = {
         }
     },
     cat: (args) => {
-        if (args[0] === 'manifest.txt') addLine('ZERO DAY key extraction active. Collect all keys.', '#ffaa00');
+        if (args[0] === 'manifest.txt') addLine('ZERO DAY key extraction active.', '#ffaa00');
         else if (args[0] === '.shadow_key') {
             addLine('Shadow protocol decoded...');
             if (!keysDB.gamma.found) {
@@ -44,11 +44,14 @@ const commandHandler = {
             }
         } else addLine('Access denied or file not found.', '#ff4444');
     },
-    scan: () => addLine('Scanning darknet nodes for anomalies...', '#ff8800'),
+    scan: () => {
+        addLine('Scanning darknet nodes for anomalies...', '#ff8800');
+        // No more "check page source" hint
+    },
     exploit: () => {
         addLine('Zero-day deployed...', '#ff0000');
         setTimeout(() => {
-            addLine('Firewall collapsed.', '#00ffff');
+            addLine('Firewall down.', '#00ffff');
             if (!keysDB.delta.found) {
                 keysDB.delta.found = true;
                 foundKeys.push(keysDB.delta);
@@ -70,7 +73,7 @@ const commandHandler = {
                 success = true;
             }
         });
-        if (!success) addLine('Invalid or already claimed key.', '#ff4444');
+        if (!success) addLine('Invalid key.', '#ff4444');
         
         if (foundKeys.length >= 4) {
             setTimeout(() => {
@@ -86,7 +89,7 @@ function updateKeysUI() {
     document.getElementById('key-count').textContent = foundKeys.length;
 }
 
-// Expose to main file
+// Make available to index.html
 window.commandHandler = commandHandler;
 window.updateKeysUI = updateKeysUI;
 
