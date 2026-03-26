@@ -1,314 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO DAY KEY HUNT // v0.8.7</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            background: #000;
-            color: #00ff41;
-            font-family: 'VT323', monospace;
-            overflow: hidden;
-            height: 100vh;
-        }
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+// vault.js - External key logic
 
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-        
-        .header {
-            background: rgba(0, 20, 0, 0.9);
-            border-bottom: 2px solid #ff0044;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.45rem;
-            pointer-events: all;
-            box-shadow: 0 0 20px #ff0044;
-        }
-        .wallet-header {
-            color: #ff4444;
-            text-shadow: 0 0 15px #ff4444;
-            font-size: 1.5rem;
-        }
-        .wallet-header a {
-            color: inherit;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .wallet-header a:hover {
-            color: #ffff00;
-            text-shadow: 0 0 20px #ffff00;
-        }
-        .glitch { animation: glitch 1s linear infinite; }
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px,0) skew(0deg); }
-            4%, 60% { transform: translate(-2px,0) skew(0deg); }
-            62% { transform: translate(13px, -1px) skew(-13deg); }
-        }
-        
-        .terminal {
-            position: absolute;
-            top: 70px; left: 50%;
-            transform: translateX(-50%);
-            width: 820px; height: 520px;
-            background: rgba(0, 15, 0, 0.95);
-            border: 3px solid #00ff41;
-            box-shadow: 0 0 30px #00ff41;
-            z-index: 10;
-            pointer-events: all;
-            display: flex; flex-direction: column;
-        }
-        .term-header {
-            background: #001100;
-            padding: 5px 15px;
-            border-bottom: 2px solid #00ff41;
-            display: flex; justify-content: space-between;
-        }
-        .term-body {
-            flex: 1; padding: 15px; overflow-y: auto;
-            font-size: 1.3rem; line-height: 1.4;
-        }
-        .input-line { display: flex; margin-top: 5px; }
-        input {
-            background: transparent; border: none; color: #00ff41;
-            font-family: inherit; font-size: inherit; flex: 1; outline: none;
-        }
-        
-        .key-inventory {
-            position: absolute; bottom: 20px; right: 30px;
-            background: rgba(0,20,0,0.9); border: 2px solid #00ff41;
-            padding: 15px; width: 240px; z-index: 20;
-        }
-        
-        .donate-box {
-            position: absolute;
-            bottom: 20px;
-            left: 30px;
-            background: rgba(0, 10, 0, 0.96);
-            border: 2px solid #ffaa00;
-            padding: 16px;
-            width: 240px;
-            z-index: 20;
-            box-shadow: 0 0 25px #ffaa00;
-            text-align: center;
-        }
-        .donate-title {
-            color: #ffaa00;
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            text-shadow: 0 0 10px #ffaa00;
-        }
-        .qr-container {
-            background: #0a0a0a;
-            padding: 10px;
-            border: 2px solid #00ff41;
-            display: inline-block;
-            box-shadow: inset 0 0 12px rgba(0,255,65,0.4);
-        }
-        .qr-container img {
-            width: 170px;
-            height: 170px;
-            image-rendering: crisp-edges;
-        }
-        
-        .scanline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 50%, rgba(0,255,65,0.05) 50%);
-            background-size: 100% 6px;
-            animation: scan 4s linear infinite;
-            z-index: 3; pointer-events: none;
-        }
-        @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
-        
-        .success {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 255, 65, 0.25);
-            display: none; 
-            align-items: center; 
-            justify-content: center;
-            flex-direction: column; 
-            z-index: 100; 
-            color: #00ff41;
-            text-shadow: 0 0 50px #00ff41; 
-            font-size: 3.8rem;
-            pointer-events: all;
-        }
-        .private-key {
-            margin-top: 40px;
-            font-size: 1.55rem;
-            background: #001100;
-            padding: 20px 35px;
-            border: 3px solid #ffff00;
-            color: #ffff00;
-            word-break: break-all;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 0 40px #ffff00;
-            line-height: 1.5;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .private-key:hover {
-            background: #002200;
-            box-shadow: 0 0 50px #ffff00;
-            transform: scale(1.02);
-        }
-        .copied-notice {
-            margin-top: 15px;
-            font-size: 1.6rem;
-            color: #00ff00;
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-    </style>
-</head>
-<body>
-    <canvas id="matrix"></canvas>
-    
-    <div class="overlay">
-        <div class="header">
-            <div class="wallet-header">
-                <a href="https://solscan.io/account/MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn" 
-                   target="_blank" title="View on Solscan">
-                    MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn
-                </a>
-            </div>
-            <div>ZERO DAY <span class="glitch">KEY HUNT</span></div>
-            <div>INTRUSION ACTIVE • NODE 47 • TOR ROUTED</div>
-        </div>
+const keysDB = {
+    alpha: { id: 'ALPHA', code: 'GHOST47', found: false },
+    beta:  { id: 'BETA',  code: 'NEONSH4D0W', found: false },
+    gamma: { id: 'GAMMA', code: 'VOIDWALKER', found: false },
+    delta: { id: 'DELTA', code: 'K3YBR3ACH', found: false }
+};
 
-        <div class="terminal" id="terminal">
-            <div class="term-header">
-                <div>root@shadowcore:~# TERMINAL v1.3.37</div>
-                <div style="color:#ff0044;">LIVE</div>
-            </div>
-            <div class="term-body" id="term-body">
-                <div>Welcome to ZERO DAY key extraction system.</div>
-                <div>Type <span style="color:#ffff00;">help</span> for commands.</div>
-            </div>
-            <div class="input-line">
-                <span>root@shadowcore:~$ </span>
-                <input type="text" id="command-input" autofocus>
-            </div>
-        </div>
+let foundKeys = [];
 
-        <div class="key-inventory">
-            <strong>KEYS COLLECTED (<span id="key-count">0</span>/4)</strong>
-            <div id="keys-list" style="margin-top:8px; font-size:1.2rem; line-height:1.4;"></div>
-        </div>
+const privateKey = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
 
-        <div class="donate-box">
-            <div class="donate-title">DONATE FOR FUTURE PROJECTS</div>
-            <div class="qr-container">
-                <img src="https://i.ibb.co/W4VxmDGq/image-1.jpg" alt="Solana QR">
-            </div>
-        </div>
-    </div>
+function addLine(text, color = '#00ff41') {
+    const line = document.createElement('div');
+    line.style.color = color;
+    document.getElementById('term-body').appendChild(line);
+    line.innerHTML = text;
+    document.getElementById('term-body').scrollTop = document.getElementById('term-body').scrollHeight;
+}
 
-    <div class="scanline"></div>
-
-    <div class="success" id="success-screen">
-        <div>VAULT BREACHED</div>
-        <div style="font-size:2.2rem; margin:25px 0;">YOU ARE NOW 1337</div>
-        <div style="margin-bottom:30px; font-size:1.6rem; text-align:center;">
-            Zero day exploit successful.
-        </div>
-        
-        <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
-        
-        <div class="private-key" id="private-key-box" title="Click to copy key">
-            CLICK TO REVEAL & COPY KEY
-        </div>
-        
-        <div id="copied-notice" class="copied-notice">✅ COPIED TO CLIPBOARD</div>
-        
-        <div style="margin-top:40px; font-size:1.4rem; color:#ffaa00;">
-            Click above to copy the key
-        </div>
-    </div>
-
-    <script src="vault.js"></script>
-    <script>
-        // Matrix Rain (unchanged)
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+const commandHandler = {
+    help: () => addLine('help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00'),
+    clear: () => document.getElementById('term-body').innerHTML = '<div>Terminal wiped.</div>',
+    ls: () => addLine('manifest.txt  encrypted_log.bin<br>Try ls -a', '#ffff00'),
+    'ls -a': () => {
+        addLine('.shadow_key  manifest.txt');
+        if (!keysDB.beta.found) {
+            keysDB.beta.found = true;
+            foundKeys.push(keysDB.beta);
+            updateKeysUI();
+            addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
         }
-        window.addEventListener('resize', resize);
-        resize();
-
-        const chars = '01アイウエオカキクケコ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const fontSize = 16;
-        let columns = width / fontSize;
-        let drops = Array(Math.floor(columns)).fill(1);
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = '#00ff41';
-            ctx.font = `${fontSize}px monospace`;
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+    },
+    cat: (args) => {
+        if (args[0] === 'manifest.txt') addLine('ZERO DAY key extraction active.', '#ffaa00');
+        else if (args[0] === '.shadow_key') {
+            addLine('Shadow protocol decoded...');
+            if (!keysDB.gamma.found) {
+                keysDB.gamma.found = true;
+                foundKeys.push(keysDB.gamma);
+                updateKeysUI();
+                addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
             }
-        }
-        setInterval(drawMatrix, 35);
-
-        // Terminal (calls functions from vault.js)
-        const termBody = document.getElementById('term-body');
-        const input = document.getElementById('command-input');
-        const keysList = document.getElementById('keys-list');
-        let foundKeys = [];
-
-        function addLine(text, color = '#00ff41') {
-            const line = document.createElement('div');
-            line.style.color = color;
-            line.innerHTML = text;
-            termBody.appendChild(line);
-            termBody.scrollTop = termBody.scrollHeight;
-        }
-
-        // These functions will be defined in vault.js
-        let commandHandler = {};
-        let updateKeys = () => {};
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const cmd = input.value.trim();
-                if (!cmd) return;
-                addLine(`root@shadowcore:~$ ${cmd}`);
-                
-                const parts = cmd.split(' ');
-                const command = parts[0].toLowerCase();
-                const args = parts.slice(1);
-
-                if (commandHandler[command]) {
-                    commandHandler[command](args);
-                } else if (command === 'cat') {
-                    // handled in vault.js
-                } else {
-                    addLine('Unknown command. Type help.', '#ff6666');
-                }
-                input.value = '';
+        } else addLine('Access denied.', '#ff4444');
+    },
+    scan: () => addLine('Scanning... Hint: check page source', '#ffff00'),
+    exploit: () => {
+        addLine('Zero-day deployed...', '#ff0000');
+        setTimeout(() => {
+            addLine('Firewall down.', '#00ffff');
+            if (!keysDB.delta.found) {
+                keysDB.delta.found = true;
+                foundKeys.push(keysDB.delta);
+                updateKeysUI();
+                addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
+            }
+        }, 1400);
+    },
+    keys: () => addLine('Collected: ' + (foundKeys.map(k => k.id).join(', ') || 'None'), '#ffff00'),
+    submit: (args) => {
+        const code = args.join('').toUpperCase();
+        let success = false;
+        Object.values(keysDB).forEach(key => {
+            if (!key.found && key.code === code) {
+                key.found = true;
+                foundKeys.push(key);
+                updateKeysUI();
+                addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
+                success = true;
             }
         });
+        if (!success) addLine('Invalid key.', '#ff4444');
+        
+        if (foundKeys.length >= 4) {
+            setTimeout(() => {
+                document.getElementById('success-screen').style.display = 'flex';
+                addLine('ZERO DAY EXPLOIT SUCCESSFUL — PRIVATE KEY UNLOCKED', '#ffff00');
+            }, 600);
+        }
+    }
+};
 
-        // Boot
-        window.onload = () => {
-            setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
-            setTimeout(() => addLine('Initiating zero day key extraction protocol...', '#ffff00'), 1300);
-            input.focus();
-        };
-    </script>
-</body>
-</html>
+function updateKeysUI() {
+    document.getElementById('keys-list').innerHTML = foundKeys.map(k => `🔑 ${k.id}: ${k.code}`).join('<br>');
+    document.getElementById('key-count').textContent = foundKeys.length;
+}
+
+// Make functions available globally
+window.commandHandler = commandHandler;
+window.updateKeysUI = updateKeysUI;
+
+// Private key copy handler
+document.getElementById('private-key-box').addEventListener('click', () => {
+    const box = document.getElementById('private-key-box');
+    const notice = document.getElementById('copied-notice');
+
+    navigator.clipboard.writeText(privateKey).then(() => {
+        notice.style.opacity = '1';
+        box.textContent = "COPIED SUCCESSFULLY ✓";
+        box.style.borderColor = '#00ff00';
+        box.style.color = '#00ff00';
+        
+        setTimeout(() => {
+            notice.style.opacity = '0';
+            box.textContent = "CLICK TO REVEAL & COPY KEY";
+            box.style.borderColor = '#ffff00';
+            box.style.color = '#ffff00';
+        }, 2200);
+    });
+});
