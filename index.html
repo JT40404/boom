@@ -70,7 +70,6 @@
             padding: 15px; width: 240px; z-index: 20;
         }
         
-        /* Clean Donate Box - Bottom Left */
         .donate-box {
             position: absolute;
             bottom: 20px;
@@ -117,7 +116,7 @@
             display: none; align-items: center; justify-content: center;
             flex-direction: column; z-index: 100; color: #00ff41;
             text-shadow: 0 0 50px #00ff41; font-size: 3.8rem;
-            pointer-events: none;
+            pointer-events: all;
         }
         .private-key {
             margin-top: 40px;
@@ -131,6 +130,16 @@
             text-align: center;
             box-shadow: 0 0 30px #ffff00;
             line-height: 1.4;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .private-key:hover {
+            background: #002200;
+            box-shadow: 0 0 40px #ffff00;
+            color: #ffffff;
+        }
+        .copied {
+            color: #00ff00 !important;
         }
     </style>
 </head>
@@ -144,7 +153,7 @@
             <div id="status">STATUS: COMPROMISED</div>
         </div>
 
-        <!-- Terminal (centered, clean) -->
+        <!-- Terminal -->
         <div class="terminal" id="terminal">
             <div class="term-header">
                 <div>root@shadowcore:~# TERMINAL v1.3.37</div>
@@ -177,7 +186,7 @@
 
     <div class="scanline"></div>
 
-    <!-- SUCCESS SCREEN with Private Key Reveal -->
+    <!-- SUCCESS SCREEN -->
     <div class="success" id="success-screen">
         <div>VAULT BREACHED</div>
         <div style="font-size:2.2rem; margin:25px 0;">YOU ARE NOW 1337</div>
@@ -186,19 +195,18 @@
         </div>
         
         <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
-        <div class="private-key">
+        <div class="private-key" id="private-key-box" title="Click to copy private key">
             4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC
         </div>
         
         <div style="margin-top:50px; font-size:1.4rem; color:#ffaa00;">
-            Do not share.<br>
-            Do not lose.<br>
-            You earned this.
+            Click the key above to copy it<br>
+            Do not share. Do not lose.
         </div>
     </div>
 
     <script>
-        // Matrix Rain Background
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -338,6 +346,23 @@
                 }
                 input.value = '';
             }
+        });
+
+        // Make private key clickable to copy
+        const privateKeyBox = document.getElementById('private-key-box');
+        const privateKeyText = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
+
+        privateKeyBox.addEventListener('click', () => {
+            navigator.clipboard.writeText(privateKeyText).then(() => {
+                const originalText = privateKeyBox.textContent;
+                privateKeyBox.textContent = "COPIED TO CLIPBOARD ✓";
+                privateKeyBox.classList.add('copied');
+                
+                setTimeout(() => {
+                    privateKeyBox.textContent = originalText;
+                    privateKeyBox.classList.remove('copied');
+                }, 2000);
+            });
         });
 
         // Boot sequence
