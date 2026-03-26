@@ -285,10 +285,8 @@
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
 
-                if (window.commandHandler && window.commandHandler[command]) {
+                if (window.commandHandler && typeof window.commandHandler[command] === 'function') {
                     window.commandHandler[command](args);
-                } else if (command === 'cat' && window.commandHandler && window.commandHandler.cat) {
-                    window.commandHandler.cat(args);
                 } else {
                     addLine('Unknown command. Type help.', '#ff6666');
                 }
@@ -296,7 +294,6 @@
             }
         });
 
-        // Boot
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
             setTimeout(() => addLine('Initiating zero day key extraction protocol...', '#ffff00'), 1300);
