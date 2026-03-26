@@ -287,10 +287,8 @@
 
                 if (window.commandHandler && window.commandHandler[command]) {
                     window.commandHandler[command](args);
-                } else if (command === 'cat') {
-                    if (window.commandHandler && window.commandHandler.cat) {
-                        window.commandHandler.cat(args);
-                    }
+                } else if (command === 'cat' && window.commandHandler && window.commandHandler.cat) {
+                    window.commandHandler.cat(args);
                 } else {
                     addLine('Unknown command. Type help.', '#ff6666');
                 }
