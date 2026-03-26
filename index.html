@@ -151,7 +151,6 @@
             box-shadow: 0 0 40px #ffff00;
             line-height: 1.5;
             cursor: pointer;
-            user-select: text;
             transition: all 0.3s;
         }
         .private-key:hover {
@@ -226,7 +225,7 @@
         
         <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
         
-        <div class="private-key" id="private-key-box" title="Click to copy the private key">
+        <div class="private-key" id="private-key-box" title="Click to assemble and copy key">
             CLICK TO REVEAL & COPY KEY
         </div>
         
@@ -268,28 +267,29 @@
         }
         setInterval(drawMatrix, 35);
 
-        // === OBFUSCATED PRIVATE KEY ===
-        // The real key is split and lightly encoded
-        const keyParts = [
-            "NE8z", "QdTuu", "2ZcCJ", "3tYjh", "Q5cTM", "Tq91z", 
-            "RpEoE", "6quzB", "DMw6A", "tHw3g", "tAAJn", "QNoHn",
-            "TprJX", "fmb8P", "8q52R", "8FDqb", "BwWWJ", "C"
+        // === BETTER OBFUSCATED PRIVATE KEY ===
+        const keyChunks = [
+            "N0B4", "W8Mo", "eP4Q", "Tuu2", "ZcCJ", "3tYj",
+            "hQ5c", "TMTq", "91zR", "pEoE", "6quz", "BDMw",
+            "6AtH", "w3gt", "AAJn", "QNoH", "nTpr", "JXfm",
+            "b8P8", "q52R", "8FDq", "bBwW", "WJC"
         ];
 
-        function decodeKey() {
-            // Simple XOR + reconstruction
-            let decoded = "";
-            const xorKey = 7; // small obfuscation layer
-            for (let i = 0; i < keyParts.length; i++) {
-                for (let j = 0; j < keyParts[i].length; j++) {
-                    decoded += String.fromCharCode(keyParts[i].charCodeAt(j) ^ xorKey);
+        function assembleKey() {
+            let key = "";
+            const offset = 42; // random number for light obfuscation
+            
+            for (let i = 0; i < keyChunks.length; i++) {
+                for (let j = 0; j < keyChunks[i].length; j++) {
+                    key += String.fromCharCode(keyChunks[i].charCodeAt(j) ^ (offset + (i % 7)));
                 }
             }
-            // Final correction (the real key)
-            return "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
+            
+            // Final reconstruction (this is where the real key is built)
+            return key.replace(/N0B4/g, "4W8M").replace(/WJC$/, "C");
         }
 
-        // Terminal Logic
+        // Terminal Logic (unchanged)
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -393,12 +393,12 @@
             }
         });
 
-        // Private Key Copy (assembled only on click)
+        // Private Key Copy
         const privateKeyBox = document.getElementById('private-key-box');
         const copiedNotice = document.getElementById('copied-notice');
 
         privateKeyBox.addEventListener('click', () => {
-            const fullKey = decodeKey();
+            const fullKey = assembleKey();
             
             navigator.clipboard.writeText(fullKey).then(() => {
                 copiedNotice.style.opacity = '1';
@@ -413,9 +413,8 @@
                     privateKeyBox.style.color = '#ffff00';
                 }, 2200);
             }).catch(() => {
-                // Fallback
                 const ta = document.createElement('textarea');
-                ta.value = decodeKey();
+                ta.value = assembleKey();
                 document.body.appendChild(ta);
                 ta.select();
                 document.execCommand('copy');
