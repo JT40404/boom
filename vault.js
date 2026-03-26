@@ -1,4 +1,4 @@
-// vault.js - External key logic
+// vault.js - External logic file
 
 const keysDB = {
     alpha: { id: 'ALPHA', code: 'GHOST47', found: false },
@@ -86,11 +86,11 @@ function updateKeysUI() {
     document.getElementById('key-count').textContent = foundKeys.length;
 }
 
-// Make functions available globally
+// Expose to main HTML
 window.commandHandler = commandHandler;
 window.updateKeysUI = updateKeysUI;
 
-// Private key copy handler
+// Private key copy
 document.getElementById('private-key-box').addEventListener('click', () => {
     const box = document.getElementById('private-key-box');
     const notice = document.getElementById('copied-notice');
