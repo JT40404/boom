@@ -16,8 +16,33 @@
             height: 100vh;
         }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; }
-        
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+        .marquee {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #220000;
+            border-bottom: 2px solid #ff0044;
+            padding: 6px 0;
+            color: #ff4444;
+            font-size: 1.35rem;
+            white-space: nowrap;
+            overflow: hidden;
+            z-index: 50;
+            box-shadow: 0 0 15px #ff0044;
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 25s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .overlay { position: fixed; top: 40px; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
         
         .header {
             background: rgba(0, 20, 0, 0.9);
@@ -70,7 +95,6 @@
             padding: 15px; width: 240px; z-index: 20;
         }
         
-        /* Mooning Graph - Top Right */
         .mooning-graph {
             position: absolute;
             top: 80px;
@@ -96,7 +120,6 @@
             height: calc(100% - 28px);
         }
         
-        /* Donate Box - Bottom Right (QR only) */
         .donate-box {
             position: absolute;
             bottom: 20px;
@@ -139,15 +162,34 @@
         
         .success {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 255, 65, 0.15);
+            background: rgba(0, 255, 65, 0.2);
             display: none; align-items: center; justify-content: center;
             flex-direction: column; z-index: 100; color: #00ff41;
-            text-shadow: 0 0 40px #00ff41; font-size: 4rem;
+            text-shadow: 0 0 50px #00ff41; font-size: 3.8rem;
             pointer-events: none;
+        }
+        .private-key {
+            margin-top: 40px;
+            font-size: 1.8rem;
+            background: #001100;
+            padding: 15px 30px;
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            word-break: break-all;
+            max-width: 80%;
+            text-align: center;
+            box-shadow: 0 0 30px #ffff00;
         }
     </style>
 </head>
 <body>
+    <!-- Scrolling Marquee -->
+    <div class="marquee">
+        <div class="marquee-content">
+            WARNING: MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn • MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn • MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn • 
+        </div>
+    </div>
+
     <canvas id="matrix"></canvas>
     
     <div class="overlay">
@@ -185,7 +227,7 @@
             <div id="keys-list" style="margin-top:8px; font-size:1.2rem; line-height:1.4;"></div>
         </div>
 
-        <!-- Donate Box (QR only) -->
+        <!-- Donate Box -->
         <div class="donate-box">
             <div class="donate-title">DONATE FOR FUTURE PROJECTS</div>
             <div class="qr-container">
@@ -196,13 +238,22 @@
 
     <div class="scanline"></div>
 
-    <!-- SUCCESS SCREEN -->
+    <!-- SUCCESS SCREEN with Private Key Reveal -->
     <div class="success" id="success-screen">
         <div>VAULT BREACHED</div>
-        <div style="font-size:2rem; margin-top:30px;">YOU ARE NOW 1337</div>
-        <div style="margin-top:60px; font-size:1.6rem; text-align:center;">
-            The SH4D0W core belongs to you, hacker.<br>
-            All systems compromised.
+        <div style="font-size:2.2rem; margin:25px 0;">YOU ARE NOW 1337</div>
+        <div style="margin-bottom:40px; font-size:1.6rem; text-align:center;">
+            The SH4D0W core belongs to you, elite hacker.
+        </div>
+        
+        <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
+        <div class="private-key" id="private-key-display">
+            4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC
+        </div>
+        
+        <div style="margin-top:50px; font-size:1.4rem; color:#ffaa00;">
+            Do not share. Do not lose.<br>
+            You earned this.
         </div>
     </div>
 
@@ -237,12 +288,11 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Animated Mooning Graph
+        // Mooning Graph
         const graphCanvas = document.getElementById('graph-canvas');
         const gctx = graphCanvas.getContext('2d');
         graphCanvas.width = 280;
         graphCanvas.height = 112;
-
         let points = [];
         let time = 0;
 
@@ -250,7 +300,6 @@
             gctx.fillStyle = 'rgba(0, 20, 0, 0.85)';
             gctx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
 
-            // Grid lines
             gctx.strokeStyle = 'rgba(0, 255, 65, 0.15)';
             gctx.lineWidth = 1;
             for (let i = 1; i < 5; i++) {
@@ -260,16 +309,14 @@
                 gctx.stroke();
             }
 
-            // Generate new point
             time++;
-            const newY = graphCanvas.height - 20 - Math.random() * 70 - (time % 30) * 1.8; // upward trend
+            const newY = graphCanvas.height - 25 - Math.random() * 65 - (time % 35) * 2.2;
             points.push(newY);
-            if (points.length > 80) points.shift();
+            if (points.length > 85) points.shift();
 
-            // Draw line
             gctx.strokeStyle = '#00ff41';
-            gctx.lineWidth = 3;
-            gctx.shadowBlur = 15;
+            gctx.lineWidth = 3.5;
+            gctx.shadowBlur = 20;
             gctx.shadowColor = '#00ff41';
             gctx.beginPath();
             for (let i = 0; i < points.length; i++) {
@@ -278,19 +325,10 @@
                 else gctx.lineTo(x, points[i]);
             }
             gctx.stroke();
-
-            // Glow dots
-            gctx.fillStyle = '#00ff41';
-            for (let i = Math.max(0, points.length - 8); i < points.length; i += 2) {
-                const x = (i / points.length) * graphCanvas.width;
-                gctx.beginPath();
-                gctx.arc(x, points[i], 3, 0, Math.PI * 2);
-                gctx.fill();
-            }
         }
-        setInterval(drawGraph, 60);
+        setInterval(drawGraph, 55);
 
-        // Terminal & Key logic (same as before)
+        // Terminal Logic
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -335,7 +373,7 @@
                     }
                 } else addLine('Access denied.', '#ff4444');
             },
-            scan: () => addLine('Scanning... Hint: page source', '#ffff00'),
+            scan: () => addLine('Scanning... Hint: check page source', '#ffff00'),
             exploit: () => {
                 addLine('Zero-day deployed...', '#ff0000');
                 setTimeout(() => {
@@ -357,9 +395,14 @@
                         success = true;
                     }
                 });
-                if (!success) addLine('Invalid.', '#ff4444');
+                if (!success) addLine('Invalid key.', '#ff4444');
+                
                 if (foundKeys.length >= 4) {
-                    setTimeout(() => document.getElementById('success-screen').style.display = 'flex', 600);
+                    setTimeout(() => {
+                        document.getElementById('success-screen').style.display = 'flex';
+                        addLine('=======================================', '#00ffff');
+                        addLine('VAULT FULLY BREACHED — PRIVATE KEY UNLOCKED', '#ffff00');
+                    }, 800);
                 }
             }
         };
