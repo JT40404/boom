@@ -65,16 +65,16 @@
         }
         
         .key-inventory {
-            position: absolute; bottom: 20px; right: 380px;
+            position: absolute; bottom: 20px; right: 30px;
             background: rgba(0,20,0,0.9); border: 2px solid #00ff41;
             padding: 15px; width: 240px; z-index: 20;
         }
         
-        /* Clean Donate Box - Bottom Right */
+        /* Clean Donate Box - Bottom Left */
         .donate-box {
             position: absolute;
             bottom: 20px;
-            right: 30px;
+            left: 30px;
             background: rgba(0, 10, 0, 0.96);
             border: 2px solid #ffaa00;
             padding: 16px;
@@ -144,7 +144,7 @@
             <div id="status">STATUS: COMPROMISED</div>
         </div>
 
-        <!-- Terminal -->
+        <!-- Terminal (centered, clean) -->
         <div class="terminal" id="terminal">
             <div class="term-header">
                 <div>root@shadowcore:~# TERMINAL v1.3.37</div>
@@ -305,7 +305,6 @@
                 });
                 if (!success) addLine('Invalid key.', '#ff4444');
                 
-                // Win condition - reveal private key
                 if (foundKeys.length >= 4) {
                     setTimeout(() => {
                         document.getElementById('success-screen').style.display = 'flex';
