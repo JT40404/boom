@@ -65,52 +65,69 @@
         }
         
         .key-inventory {
-            position: absolute; bottom: 20px; right: 20px;
+            position: absolute; bottom: 20px; right: 380px;
             background: rgba(0,20,0,0.9); border: 2px solid #00ff41;
             padding: 15px; width: 240px; z-index: 20;
         }
         
-        /* Clean Cyberpunk Donate Box */
+        /* Mooning Graph - Top Right */
+        .mooning-graph {
+            position: absolute;
+            top: 80px;
+            right: 30px;
+            width: 280px;
+            height: 140px;
+            background: rgba(0, 15, 0, 0.9);
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 20px #00ff41;
+            z-index: 15;
+            overflow: hidden;
+        }
+        .graph-header {
+            background: #001100;
+            padding: 4px 10px;
+            font-size: 1.1rem;
+            color: #ffff00;
+            border-bottom: 1px solid #00ff41;
+            text-align: center;
+        }
+        .graph-canvas {
+            width: 100%;
+            height: calc(100% - 28px);
+        }
+        
+        /* Donate Box - Bottom Right (QR only) */
         .donate-box {
-            position: absolute; bottom: 20px; left: 20px;
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
             background: rgba(0, 10, 0, 0.96);
             border: 2px solid #ffaa00;
-            padding: 18px;
-            width: 360px;
+            padding: 16px;
+            width: 240px;
             z-index: 20;
             box-shadow: 0 0 25px #ffaa00;
+            text-align: center;
         }
         .donate-title {
-            color: #ffaa00; font-size: 1.45rem; margin-bottom: 10px;
-            text-shadow: 0 0 12px #ffaa00;
+            color: #ffaa00;
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px #ffaa00;
         }
         .qr-container {
             background: #0a0a0a;
-            padding: 14px;
-            border: 3px solid #00ff41;
-            display: flex; justify-content: center;
-            margin-bottom: 14px;
-            box-shadow: inset 0 0 15px rgba(0,255,65,0.3);
+            padding: 10px;
+            border: 2px solid #00ff41;
+            display: inline-block;
+            box-shadow: inset 0 0 12px rgba(0,255,65,0.4);
         }
         .qr-container img {
-            width: 195px; height: 195px;
+            width: 170px;
+            height: 170px;
             image-rendering: crisp-edges;
         }
-        .wallet-address {
-            background: #001100;
-            padding: 12px;
-            border: 1px dashed #ffaa00;
-            font-size: 1.18rem;
-            word-break: break-all;
-            color: #ffdd88;
-            cursor: pointer;
-            transition: all 0.25s;
-        }
-        .wallet-address:hover {
-            background: #002200;
-            box-shadow: 0 0 20px #ffaa00;
-            color: #ffff00;
-        }
+        
         .scanline {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, transparent 50%, rgba(0,255,65,0.05) 50%);
@@ -140,6 +157,12 @@
             <div id="status">STATUS: COMPROMISED</div>
         </div>
 
+        <!-- Mooning Graph -->
+        <div class="mooning-graph">
+            <div class="graph-header">/// MEME MOON PROTOCOL ///</div>
+            <canvas id="graph-canvas" class="graph-canvas"></canvas>
+        </div>
+
         <!-- Terminal -->
         <div class="terminal" id="terminal">
             <div class="term-header">
@@ -162,21 +185,11 @@
             <div id="keys-list" style="margin-top:8px; font-size:1.2rem; line-height:1.4;"></div>
         </div>
 
-        <!-- Donate Box with your latest QR code -->
+        <!-- Donate Box (QR only) -->
         <div class="donate-box">
-            <div class="donate-title">/// DONATE FOR FUTURE PROJECTS ///</div>
-            <div style="margin-bottom:10px; font-size:1.25rem;">Keep the shadows alive</div>
-            
+            <div class="donate-title">DONATE FOR FUTURE PROJECTS</div>
             <div class="qr-container">
-                <img src="https://i.ibb.co/W4VxmDGq/image-1.jpg" 
-                     alt="Solana Donate QR Code">
-            </div>
-            
-            <div class="wallet-address" id="wallet-address" title="Click to copy">
-                METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo
-            </div>
-            <div style="margin-top:10px; font-size:1.05rem; color:#ffaa00; text-align:center;">
-                Solana • Click address to copy
+                <img src="https://i.ibb.co/W4VxmDGq/image-1.jpg" alt="Solana QR">
             </div>
         </div>
     </div>
@@ -224,7 +237,60 @@
         }
         setInterval(drawMatrix, 35);
 
-        // Terminal Logic
+        // Animated Mooning Graph
+        const graphCanvas = document.getElementById('graph-canvas');
+        const gctx = graphCanvas.getContext('2d');
+        graphCanvas.width = 280;
+        graphCanvas.height = 112;
+
+        let points = [];
+        let time = 0;
+
+        function drawGraph() {
+            gctx.fillStyle = 'rgba(0, 20, 0, 0.85)';
+            gctx.fillRect(0, 0, graphCanvas.width, graphCanvas.height);
+
+            // Grid lines
+            gctx.strokeStyle = 'rgba(0, 255, 65, 0.15)';
+            gctx.lineWidth = 1;
+            for (let i = 1; i < 5; i++) {
+                gctx.beginPath();
+                gctx.moveTo(0, i * 28);
+                gctx.lineTo(graphCanvas.width, i * 28);
+                gctx.stroke();
+            }
+
+            // Generate new point
+            time++;
+            const newY = graphCanvas.height - 20 - Math.random() * 70 - (time % 30) * 1.8; // upward trend
+            points.push(newY);
+            if (points.length > 80) points.shift();
+
+            // Draw line
+            gctx.strokeStyle = '#00ff41';
+            gctx.lineWidth = 3;
+            gctx.shadowBlur = 15;
+            gctx.shadowColor = '#00ff41';
+            gctx.beginPath();
+            for (let i = 0; i < points.length; i++) {
+                const x = (i / points.length) * graphCanvas.width;
+                if (i === 0) gctx.moveTo(x, points[i]);
+                else gctx.lineTo(x, points[i]);
+            }
+            gctx.stroke();
+
+            // Glow dots
+            gctx.fillStyle = '#00ff41';
+            for (let i = Math.max(0, points.length - 8); i < points.length; i += 2) {
+                const x = (i / points.length) * graphCanvas.width;
+                gctx.beginPath();
+                gctx.arc(x, points[i], 3, 0, Math.PI * 2);
+                gctx.fill();
+            }
+        }
+        setInterval(drawGraph, 60);
+
+        // Terminal & Key logic (same as before)
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -250,47 +316,35 @@
             clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
             ls: () => { 
                 addLine('manifest.txt  encrypted_log.bin'); 
-                addLine('Try <span style="color:#ffff00;">ls -a</span>', '#ffff00');
+                addLine('Try ls -a', '#ffff00');
             },
             'ls -a': () => {
                 addLine('.shadow_key  manifest.txt');
                 if (!keysDB.beta.found) {
-                    keysDB.beta.found = true;
-                    foundKeys.push(keysDB.beta);
-                    updateKeys();
+                    keysDB.beta.found = true; foundKeys.push(keysDB.beta); updateKeys();
                     addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
                 }
             },
             cat: (args) => {
-                if (args[0] === 'manifest.txt') {
-                    addLine('SH4D0W_VAULT key extraction active.', '#ffaa00');
-                } else if (args[0] === '.shadow_key') {
+                if (args[0] === 'manifest.txt') addLine('SH4D0W_VAULT active.', '#ffaa00');
+                else if (args[0] === '.shadow_key') {
                     addLine('Shadow protocol decoded...');
                     if (!keysDB.gamma.found) {
-                        keysDB.gamma.found = true;
-                        foundKeys.push(keysDB.gamma);
-                        updateKeys();
+                        keysDB.gamma.found = true; foundKeys.push(keysDB.gamma); updateKeys();
                         addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
                     }
-                } else {
-                    addLine('Access denied.', '#ff4444');
-                }
+                } else addLine('Access denied.', '#ff4444');
             },
-            scan: () => {
-                addLine('Scanning darknet nodes...', '#ff8800');
-                setTimeout(() => addLine('Hint: check page source (Ctrl+U)', '#ffff00'), 800);
-            },
+            scan: () => addLine('Scanning... Hint: page source', '#ffff00'),
             exploit: () => {
-                addLine('Deploying zero-day exploit...', '#ff0000');
+                addLine('Zero-day deployed...', '#ff0000');
                 setTimeout(() => {
-                    addLine('Firewall collapsed.', '#00ffff');
+                    addLine('Firewall down.', '#00ffff');
                     if (!keysDB.delta.found) {
-                        keysDB.delta.found = true;
-                        foundKeys.push(keysDB.delta);
-                        updateKeys();
+                        keysDB.delta.found = true; foundKeys.push(keysDB.delta); updateKeys();
                         addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
                     }
-                }, 1500);
+                }, 1400);
             },
             keys: () => addLine('Collected: ' + (foundKeys.map(k => k.id).join(', ') || 'None'), '#ffff00'),
             submit: (args) => {
@@ -298,18 +352,14 @@
                 let success = false;
                 Object.values(keysDB).forEach(key => {
                     if (!key.found && key.code === code) {
-                        key.found = true;
-                        foundKeys.push(key);
-                        updateKeys();
+                        key.found = true; foundKeys.push(key); updateKeys();
                         addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
                         success = true;
                     }
                 });
-                if (!success) addLine('Invalid or already claimed.', '#ff4444');
+                if (!success) addLine('Invalid.', '#ff4444');
                 if (foundKeys.length >= 4) {
-                    setTimeout(() => {
-                        document.getElementById('success-screen').style.display = 'flex';
-                    }, 600);
+                    setTimeout(() => document.getElementById('success-screen').style.display = 'flex', 600);
                 }
             }
         };
@@ -327,40 +377,18 @@
                 const parts = cmd.split(' ');
                 const command = parts[0].toLowerCase();
                 const args = parts.slice(1);
-                if (commandHandler[command]) {
-                    commandHandler[command](args);
-                } else if (command === 'cat') {
-                    commandHandler.cat(args);
-                } else {
-                    addLine('Unknown command. Type help.', '#ff6666');
-                }
+                if (commandHandler[command]) commandHandler[command](args);
+                else if (command === 'cat') commandHandler.cat(args);
+                else addLine('Unknown command. Type help.', '#ff6666');
                 input.value = '';
             }
         });
 
-        // Click to copy wallet address
-        document.getElementById('wallet-address').addEventListener('click', () => {
-            const addr = "METAH1A3zGUbXdkN9cEs8Vrt7ma3TEBWF3iGBHfypSo";
-            navigator.clipboard.writeText(addr).then(() => {
-                const el = document.getElementById('wallet-address');
-                const originalText = el.textContent;
-                el.textContent = "COPIED TO CLIPBOARD ✓";
-                el.style.color = "#00ff00";
-                setTimeout(() => {
-                    el.textContent = originalText;
-                    el.style.color = "#ffdd88";
-                }, 1600);
-            });
-        });
-
-        // Boot sequence + hidden key hint
+        // Boot
         window.onload = () => {
             setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
             setTimeout(() => addLine('Initiating key extraction protocol...', '#ffff00'), 1300);
             input.focus();
-            
-            console.log('%c🔥 SH4D0W_VAULT KEY ALPHA: GHOST47 🔥\nDonate link active.', 
-                'color:#00ff41; font-family:monospace; background:#001100; padding:4px 8px;');
         };
     </script>
 </body>
