@@ -213,6 +213,16 @@
         </div>
     </div>
 
+    <!-- Hidden chunks scattered around -->
+    <div id="chunk1" data-part="4W8MoeP4QTuu" style="display:none;"></div>
+    <div id="chunk2" data-part="2ZcCJ3tYjh" style="display:none;"></div>
+    <div id="chunk3" data-part="Q5cTMTq91zRp" style="display:none;"></div>
+    <div id="chunk4" data-part="EoE6quzBDMw" style="display:none;"></div>
+    <div id="chunk5" data-part="6AtHw3gtAAJn" style="display:none;"></div>
+    <div id="chunk6" data-part="QNoHnTprJX" style="display:none;"></div>
+    <div id="chunk7" data-part="fmb8P8q52R8F" style="display:none;"></div>
+    <div id="chunk8" data-part="DqbBwWWJC" style="display:none;"></div>
+
     <div class="scanline"></div>
 
     <!-- Success Screen -->
@@ -267,30 +277,26 @@
         }
         setInterval(drawMatrix, 35);
 
-        // === PRIVATE KEY BROKEN INTO 8 SHUFFLED CHUNKS ===
-        const keyChunks = [
-            "6AtHw3gtAAJn",     // chunk 5 (original position)
-            "Q5cTMTq91zRp",     // chunk 3
-            "fmb8P8q52R8F",     // chunk 7
-            "4W8MoeP4QTuu",     // chunk 1
-            "DqbBwWWJC",        // chunk 8
-            "2ZcCJ3tYjh",       // chunk 2
-            "EoE6quzBDMw",      // chunk 4
-            "QNoHnTprJX"        // chunk 6
-        ];
-
-        // Shuffle order (randomized indices)
-        const shuffleOrder = [3, 1, 6, 0, 4, 2, 7, 5];
+        // Order is hidden here (less obvious than before)
+        const assemblyOrder = [3, 1, 5, 0, 6, 2, 4, 7];   // shuffled indices
 
         function assembleKey() {
             let key = "";
-            for (let i = 0; i < shuffleOrder.length; i++) {
-                key += keyChunks[shuffleOrder[i]];
-            }
+            
+            // Pull chunks from hidden divs
+            key += document.getElementById('chunk4').dataset.part;  // index 0 in order
+            key += document.getElementById('chunk2').dataset.part;  // index 1
+            key += document.getElementById('chunk6').dataset.part;  // index 2
+            key += document.getElementById('chunk1').dataset.part;  // index 3
+            key += document.getElementById('chunk7').dataset.part;  // index 4
+            key += document.getElementById('chunk3').dataset.part;  // index 5
+            key += document.getElementById('chunk5').dataset.part;  // index 6
+            key += document.getElementById('chunk8').dataset.part;  // index 7
+
             return key;
         }
 
-        // Terminal Logic
+        // Terminal Logic (same as before)
         const termBody = document.getElementById('term-body');
         const input = document.getElementById('command-input');
         const keysList = document.getElementById('keys-list');
@@ -432,5 +438,8 @@
             input.focus();
         };
     </script>
+
+    <!-- Extra obfuscation comment -->
+    <!-- assembly hint: order is not sequential -->
 </body>
 </html>
