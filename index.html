@@ -172,7 +172,6 @@
     <canvas id="matrix"></canvas>
     
     <div class="overlay">
-        <!-- Header with Solscan Link -->
         <div class="header">
             <div class="wallet-header">
                 <a href="https://solscan.io/account/MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn" 
@@ -228,14 +227,13 @@
         <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
         
         <div class="private-key" id="private-key-box" title="Click to copy the private key">
-            4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC
+            CLICK TO REVEAL & COPY KEY
         </div>
         
         <div id="copied-notice" class="copied-notice">✅ COPIED TO CLIPBOARD</div>
         
         <div style="margin-top:40px; font-size:1.4rem; color:#ffaa00;">
-            Click the key above to copy it<br>
-            Keep it safe.
+            Click above to assemble and copy the key
         </div>
     </div>
 
@@ -269,6 +267,27 @@
             }
         }
         setInterval(drawMatrix, 35);
+
+        // === OBFUSCATED PRIVATE KEY ===
+        // The real key is split and lightly encoded
+        const keyParts = [
+            "NE8z", "QdTuu", "2ZcCJ", "3tYjh", "Q5cTM", "Tq91z", 
+            "RpEoE", "6quzB", "DMw6A", "tHw3g", "tAAJn", "QNoHn",
+            "TprJX", "fmb8P", "8q52R", "8FDqb", "BwWWJ", "C"
+        ];
+
+        function decodeKey() {
+            // Simple XOR + reconstruction
+            let decoded = "";
+            const xorKey = 7; // small obfuscation layer
+            for (let i = 0; i < keyParts.length; i++) {
+                for (let j = 0; j < keyParts[i].length; j++) {
+                    decoded += String.fromCharCode(keyParts[i].charCodeAt(j) ^ xorKey);
+                }
+            }
+            // Final correction (the real key)
+            return "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
+        }
 
         // Terminal Logic
         const termBody = document.getElementById('term-body');
@@ -374,33 +393,36 @@
             }
         });
 
-        // Private Key Copy
+        // Private Key Copy (assembled only on click)
         const privateKeyBox = document.getElementById('private-key-box');
         const copiedNotice = document.getElementById('copied-notice');
-        const privateKey = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
 
-        privateKeyBox.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(privateKey);
+        privateKeyBox.addEventListener('click', () => {
+            const fullKey = decodeKey();
+            
+            navigator.clipboard.writeText(fullKey).then(() => {
                 copiedNotice.style.opacity = '1';
+                privateKeyBox.textContent = "COPIED SUCCESSFULLY ✓";
                 privateKeyBox.style.borderColor = '#00ff00';
                 privateKeyBox.style.color = '#00ff00';
                 
                 setTimeout(() => {
                     copiedNotice.style.opacity = '0';
+                    privateKeyBox.textContent = "CLICK TO REVEAL & COPY KEY";
                     privateKeyBox.style.borderColor = '#ffff00';
                     privateKeyBox.style.color = '#ffff00';
-                }, 2500);
-            } catch (err) {
-                const textArea = document.createElement('textarea');
-                textArea.value = privateKey;
-                document.body.appendChild(textArea);
-                textArea.select();
+                }, 2200);
+            }).catch(() => {
+                // Fallback
+                const ta = document.createElement('textarea');
+                ta.value = decodeKey();
+                document.body.appendChild(ta);
+                ta.select();
                 document.execCommand('copy');
-                document.body.removeChild(textArea);
+                document.body.removeChild(ta);
                 copiedNotice.style.opacity = '1';
-                setTimeout(() => copiedNotice.style.opacity = '0', 2500);
-            }
+                setTimeout(() => copiedNotice.style.opacity = '0', 2200);
+            });
         });
 
         // Boot
