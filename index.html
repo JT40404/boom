@@ -3,415 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO DAY KEY HUNT // v0.8.7</title>
+    <title>$OTTER • The Cutest Otter on Solana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Press+Start+2P&display=swap');
         
-        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --otter-orange: #FF6B00;
+        }
+        
         body {
-            background: #000;
-            color: #00ff41;
-            font-family: 'VT323', monospace;
-            overflow: hidden;
-            height: 100vh;
-        }
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
-
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-        
-        .header {
-            background: rgba(0, 20, 0, 0.9);
-            border-bottom: 2px solid #ff0044;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.45rem;
-            pointer-events: all;
-            box-shadow: 0 0 20px #ff0044;
-        }
-        .wallet-header {
-            color: #ff4444;
-            text-shadow: 0 0 15px #ff4444;
-            font-size: 1.5rem;
-        }
-        .wallet-header a {
-            color: inherit;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .wallet-header a:hover {
-            color: #ffff00;
-            text-shadow: 0 0 20px #ffff00;
-        }
-        .glitch { animation: glitch 1s linear infinite; }
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px,0) skew(0deg); }
-            4%, 60% { transform: translate(-2px,0) skew(0deg); }
-            62% { transform: translate(13px, -1px) skew(-13deg); }
+            font-family: 'Comic Neue', cursive;
         }
         
-        .terminal {
-            position: absolute;
-            top: 70px; left: 50%;
-            transform: translateX(-50%);
-            width: 820px; height: 520px;
-            background: rgba(0, 15, 0, 0.95);
-            border: 3px solid #00ff41;
-            box-shadow: 0 0 30px #00ff41;
-            z-index: 10;
-            pointer-events: all;
-            display: flex; flex-direction: column;
-        }
-        .term-header {
-            background: #001100;
-            padding: 5px 15px;
-            border-bottom: 2px solid #00ff41;
-            display: flex; justify-content: space-between;
-        }
-        .term-body {
-            flex: 1; padding: 15px; overflow-y: auto;
-            font-size: 1.3rem; line-height: 1.4;
-        }
-        .input-line { display: flex; margin-top: 5px; }
-        input {
-            background: transparent; border: none; color: #00ff41;
-            font-family: inherit; font-size: inherit; flex: 1; outline: none;
+        .hero-bg {
+            background: linear-gradient(135deg, #fffaf0 0%, #ffe4d9 100%);
         }
         
-        .key-inventory {
-            position: absolute; bottom: 20px; right: 30px;
-            background: rgba(0,20,0,0.9); border: 2px solid #00ff41;
-            padding: 15px; width: 240px; z-index: 20;
+        .otter-float {
+            animation: float 3s ease-in-out infinite;
         }
         
-        .donate-box {
-            position: absolute;
-            bottom: 20px;
-            left: 30px;
-            background: rgba(0, 10, 0, 0.96);
-            border: 2px solid #ffaa00;
-            padding: 16px;
-            width: 240px;
-            z-index: 20;
-            box-shadow: 0 0 25px #ffaa00;
-            text-align: center;
-        }
-        .donate-title {
-            color: #ffaa00;
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            text-shadow: 0 0 10px #ffaa00;
-        }
-        .qr-container {
-            background: #0a0a0a;
-            padding: 10px;
-            border: 2px solid #00ff41;
-            display: inline-block;
-            box-shadow: inset 0 0 12px rgba(0,255,65,0.4);
-        }
-        .qr-container img {
-            width: 170px;
-            height: 170px;
-            image-rendering: crisp-edges;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
         
-        .scanline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 50%, rgba(0,255,65,0.05) 50%);
-            background-size: 100% 6px;
-            animation: scan 4s linear infinite;
-            z-index: 3; pointer-events: none;
+        .tokenomics-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
         
-        .success {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 255, 65, 0.25);
-            display: none; 
-            align-items: center; 
-            justify-content: center;
-            flex-direction: column; 
-            z-index: 100; 
-            color: #00ff41;
-            text-shadow: 0 0 50px #00ff41; 
-            font-size: 3.8rem;
-            pointer-events: all;
-        }
-        .private-key {
-            margin-top: 40px;
-            font-size: 1.55rem;
-            background: #001100;
-            padding: 20px 35px;
-            border: 3px solid #ffff00;
-            color: #ffff00;
-            word-break: break-all;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 0 40px #ffff00;
-            line-height: 1.5;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .private-key:hover {
-            background: #002200;
-            box-shadow: 0 0 50px #ffff00;
-            transform: scale(1.02);
-        }
-        .copied-notice {
-            margin-top: 15px;
-            font-size: 1.6rem;
-            color: #00ff00;
-            opacity: 0;
-            transition: opacity 0.4s;
+        .tokenomics-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px -12px rgb(255 107 0 / 0.25);
         }
     </style>
 </head>
-<body>
-    <canvas id="matrix"></canvas>
-    
-    <div class="overlay">
-        <div class="header">
-            <div class="wallet-header">
-                <a href="https://solscan.io/account/MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn" 
-                   target="_blank" title="View on Solscan">
-                    MuDxVcdRAA4dHzKbJsNeLzY5cTn8KMAA1Mz7428seHn
+<body class="bg-[#fffaf0] text-[#3d2b1f]">
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b-4 border-[#FF6B00] sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Small otter logo -->
+                <div class="w-12 h-12 bg-[#FF6B00] rounded-2xl flex items-center justify-center text-white text-3xl">🦦</div>
+                <div>
+                    <span class="text-4xl font-bold tracking-tighter">$OTTER</span>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-lg font-bold">
+                <a href="#about" class="hover:text-[#FF6B00] transition-colors">About</a>
+                <a href="#tokenomics" class="hover:text-[#FF6B00] transition-colors">Tokenomics</a>
+                <a href="#how-to-buy" class="hover:text-[#FF6B00] transition-colors">How to Buy</a>
+                <a href="https://raydium.io/swap/?inputCurrency=sol&outputCurrency=PLACEHOLDER_CA" 
+                   target="_blank"
+                   class="px-6 py-3 bg-[#FF6B00] text-white rounded-3xl hover:bg-[#e55c00] transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-rocket"></i>
+                    BUY ON RAYDIUM
                 </a>
             </div>
-            <div>ZERO DAY <span class="glitch">KEY HUNT</span></div>
-            <div>INTRUSION ACTIVE • NODE 47 • TOR ROUTED</div>
-        </div>
-
-        <div class="terminal" id="terminal">
-            <div class="term-header">
-                <div>root@shadowcore:~# TERMINAL v1.3.37</div>
-                <div style="color:#ff0044;">LIVE</div>
-            </div>
-            <div class="term-body" id="term-body">
-                <div>Welcome to ZERO DAY key extraction system.</div>
-                <div>Type <span style="color:#ffff00;">help</span> for commands.</div>
-            </div>
-            <div class="input-line">
-                <span>root@shadowcore:~$ </span>
-                <input type="text" id="command-input" autofocus>
+            
+            <div class="flex items-center gap-4">
+                <a href="#" class="text-2xl hover:text-[#FF6B00]"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="text-2xl hover:text-[#FF6B00]"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#" class="text-2xl hover:text-[#FF6B00]"><i class="fa-solid fa-chart-simple"></i></a>
+                <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" 
+                        class="md:hidden text-3xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
         </div>
-
-        <div class="key-inventory">
-            <strong>KEYS COLLECTED (<span id="key-count">0</span>/4)</strong>
-            <div id="keys-list" style="margin-top:8px; font-size:1.2rem; line-height:1.4;"></div>
-        </div>
-
-        <div class="donate-box">
-            <div class="donate-title">DONATE FOR FUTURE PROJECTS</div>
-            <div class="qr-container">
-                <img src="https://i.ibb.co/W4VxmDGq/image-1.jpg" alt="Solana QR">
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t-4 border-[#FF6B00] px-6 py-6">
+            <div class="flex flex-col gap-6 text-lg font-bold text-center">
+                <a href="#about" class="hover:text-[#FF6B00]">About</a>
+                <a href="#tokenomics" class="hover:text-[#FF6B00]">Tokenomics</a>
+                <a href="#how-to-buy" class="hover:text-[#FF6B00]">How to Buy</a>
+                <a href="https://raydium.io/swap/?inputCurrency=sol&outputCurrency=PLACEHOLDER_CA" 
+                   target="_blank"
+                   class="px-8 py-4 bg-[#FF6B00] text-white rounded-3xl text-xl">BUY $OTTER ON RAYDIUM</a>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <div class="scanline"></div>
+    <!-- HERO SECTION - OTTER CENTER STAGE -->
+    <header class="hero-bg pt-12 pb-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left: Text -->
+                <div class="flex flex-col justify-center">
+                    <div class="inline-flex items-center gap-2 bg-white text-[#FF6B00] px-6 py-2 rounded-3xl text-xl font-bold mb-6 shadow-inner">
+                        <span class="text-3xl">🦦</span>
+                        THE CUTEST OTTER ON SOLANA
+                    </div>
+                    
+                    <h1 class="text-7xl md:text-8xl font-black leading-none tracking-tighter mb-6">
+                        MEET<br><span class="text-[#FF6B00]">$OTTER</span>
+                    </h1>
+                    
+                    <p class="text-3xl font-bold mb-8 leading-tight">
+                        10,000,000 supply • Built on Solana • Launched on Raydium
+                    </p>
+                    
+                    <p class="text-2xl max-w-md mb-10">
+                        The most adorable, snack-loving otter in crypto. 
+                        Fair launch. Zero taxes. Pure vibes.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://raydium.io/swap/?inputCurrency=sol&outputCurrency=PLACEHOLDER_CA" 
+                           target="_blank"
+                           class="px-10 py-6 bg-[#FF6B00] hover:bg-[#e55c00] text-white text-3xl font-bold rounded-3xl flex items-center gap-4 shadow-xl transition-all">
+                            <i class="fa-solid fa-rocket"></i>
+                            BUY $OTTER NOW
+                        </a>
+                        
+                        <a href="#tokenomics" 
+                           class="px-10 py-6 border-4 border-[#FF6B00] hover:bg-[#FF6B00] hover:text-white text-[#FF6B00] text-3xl font-bold rounded-3xl transition-all">
+                            SEE TOKENOMICS
+                        </a>
+                    </div>
+                    
+                    <div class="mt-10 flex items-center gap-8 text-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                            <span class="font-bold">LIVE ON RAYDIUM</span>
+                        </div>
+                        <div>
+                            <span class="font-bold">CA:</span> 
+                            <span class="font-mono text-[#FF6B00] text-lg">Otter...1234567890abcdef</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RIGHT: OTTER CENTER STAGE -->
+                <div class="relative flex justify-center">
+                    <div class="otter-float">
+                        <img id="otter-hero" 
+                             src="YOUR_OTTER_IMAGE_HERE.jpg" 
+                             alt="Cute Cartoon Otter holding heart-shaped treat"
+                             class="w-full max-w-[420px] drop-shadow-2xl">
+                    </div>
+                    
+                    <!-- Decorative floating elements -->
+                    <div class="absolute -top-8 -left-8 text-6xl animate-bounce">❤️</div>
+                    <div class="absolute -bottom-6 -right-8 text-5xl animate-bounce delay-300">🍪</div>
+                    <div class="absolute top-1/3 -right-12 text-4xl rotate-12 animate-pulse">🦦</div>
+                    
+                    <!-- Raydium + Solana badges -->
+                    <div class="absolute -bottom-4 right-8 bg-white px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xl font-bold">
+                        <span class="text-[#00D1FF]">◎</span>
+                        <span>SOLANA</span>
+                        <span class="text-[#FF6B00]">RAYDIUM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <div class="success" id="success-screen">
-        <div>VAULT BREACHED</div>
-        <div style="font-size:2.2rem; margin:25px 0;">YOU ARE NOW 1337</div>
-        <div style="margin-bottom:30px; font-size:1.6rem; text-align:center;">
-            Zero day exploit successful.
+    <!-- ABOUT -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-5xl font-black mb-8">Why $OTTER?</h2>
+            <p class="text-2xl leading-relaxed max-w-2xl mx-auto">
+                Born from the cutest cartoon otter ever created, $OTTER is more than just a token — 
+                it's a community of snack-loving, heart-melting degens who believe in cute vibes and fair launches.
+            </p>
+            <div class="mt-12 grid grid-cols-3 gap-8 text-center">
+                <div>
+                    <div class="text-6xl mb-4">🦦</div>
+                    <p class="font-bold text-xl">100% Community Owned</p>
+                </div>
+                <div>
+                    <div class="text-6xl mb-4">🔥</div>
+                    <p class="font-bold text-xl">LP Burned • Renounced</p>
+                </div>
+                <div>
+                    <div class="text-6xl mb-4">0️⃣</div>
+                    <p class="font-bold text-xl">Zero Taxes • Pure Fun</p>
+                </div>
+            </div>
         </div>
-        
-        <div style="font-size:1.8rem; color:#ffff00; margin:20px 0;">FINAL REWARD UNLOCKED</div>
-        
-        <div class="private-key" id="private-key-box" title="Click to copy key">
-            CLICK TO REVEAL & COPY KEY
+    </section>
+
+    <!-- TOKENOMICS SECTION -->
+    <section id="tokenomics" class="py-20 bg-[#fffaf0]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-6xl font-black mb-3">TOKENOMICS</h2>
+                <p class="text-3xl font-bold text-[#FF6B00]">10,000,000 $OTTER • Built on Solana • Launched on Raydium</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="tokenomics-card bg-white border-4 border-[#FF6B00] rounded-3xl p-8 text-center">
+                    <div class="text-7xl mb-6">📊</div>
+                    <h3 class="text-4xl font-bold mb-2">Total Supply</h3>
+                    <p class="text-6xl font-black text-[#FF6B00]">10,000,000</p>
+                    <p class="text-2xl mt-4">Fixed. No mint. No burn mechanism needed.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="tokenomics-card bg-white border-4 border-[#FF6B00] rounded-3xl p-8 text-center">
+                    <div class="text-7xl mb-6">💧</div>
+                    <h3 class="text-4xl font-bold mb-2">Liquidity</h3>
+                    <p class="text-5xl font-black">100% in Raydium Pool</p>
+                    <p class="mt-6 text-xl">LP tokens permanently burned at launch.<br>
+                    <span class="font-bold">Fair launch. No rugs. Just otters.</span></p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="tokenomics-card bg-white border-4 border-[#FF6B00] rounded-3xl p-8 text-center">
+                    <div class="text-7xl mb-6">🛡️</div>
+                    <h3 class="text-4xl font-bold mb-2">Taxes</h3>
+                    <p class="text-8xl font-black text-[#FF6B00]">0%</p>
+                    <p class="text-2xl mt-6">Buy = 0%<br>Sell = 0%<br>Just pure cuddles and gains.</p>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="tokenomics-card bg-white border-4 border-[#FF6B00] rounded-3xl p-8 text-center md:col-span-2 lg:col-span-1">
+                    <div class="text-7xl mb-6">🔗</div>
+                    <h3 class="text-4xl font-bold mb-2">Contract &amp; Launch</h3>
+                    <div class="bg-[#fffaf0] rounded-2xl p-6 text-left font-mono text-lg break-all mb-6">
+                        Contract Address:<br>
+                        <span class="text-[#FF6B00]">Otter1234567890abcdef1234567890abcdef1234</span>
+                    </div>
+                    <p class="text-xl">✅ Contract renounced<br>✅ LP burned on Raydium<br>✅ Launched March 2026</p>
+                </div>
+                
+                <!-- Card 5 -->
+                <div class="tokenomics-card bg-white border-4 border-[#FF6B00] rounded-3xl p-8 text-center">
+                    <div class="text-7xl mb-6">📦</div>
+                    <h3 class="text-4xl font-bold mb-2">Distribution</h3>
+                    <ul class="text-left text-2xl space-y-4 mt-8">
+                        <li class="flex justify-between"><span>Community &amp; Liquidity</span><span class="font-bold">100%</span></li>
+                        <li class="flex justify-between"><span>Team / Marketing</span><span class="font-bold">0%</span></li>
+                        <li class="flex justify-between"><span>Private sale</span><span class="font-bold">0%</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <p class="text-center mt-12 text-xl max-w-2xl mx-auto">
+                This is a pure, fair-launch meme coin. No hidden allocations. 
+                Just an adorable otter, 10 million tokens, and a whole lot of love on Solana.
+            </p>
         </div>
-        
-        <div id="copied-notice" class="copied-notice">✅ COPIED TO CLIPBOARD</div>
-        
-        <div style="margin-top:40px; font-size:1.4rem; color:#ffaa00;">
-            Click above to copy the key
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section id="how-to-buy" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-6xl font-black text-center mb-12">HOW TO BUY $OTTER</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-3xl bg-[#FF6B00] text-white flex items-center justify-center text-5xl mb-6">1️⃣</div>
+                    <h4 class="text-3xl font-bold mb-3">Get SOL</h4>
+                    <p class="text-xl">Buy Solana on any exchange or wallet (Phantom, Backpack, etc.)</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-3xl bg-[#FF6B00] text-white flex items-center justify-center text-5xl mb-6">2️⃣</div>
+                    <h4 class="text-3xl font-bold mb-3">Connect to Raydium</h4>
+                    <p class="text-xl">Go to raydium.io, connect your Solana wallet</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-3xl bg-[#FF6B00] text-white flex items-center justify-center text-5xl mb-6">3️⃣</div>
+                    <h4 class="text-3xl font-bold mb-3">Swap for $OTTER</h4>
+                    <p class="text-xl">Paste the contract address and swap SOL for $OTTER</p>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <a href="https://raydium.io/swap/?inputCurrency=sol&outputCurrency=PLACEHOLDER_CA" 
+                   target="_blank"
+                   class="inline-flex items-center gap-4 text-4xl font-bold bg-[#FF6B00] text-white px-12 py-8 rounded-3xl hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    BUY $OTTER ON RAYDIUM RIGHT NOW
+                </a>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#3d2b1f] text-white py-16">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex justify-center items-center gap-3 mb-8">
+                <span class="text-6xl">🦦</span>
+                <span class="text-5xl font-black tracking-tighter">$OTTER</span>
+            </div>
+            <p class="text-xl mb-8">The cutest otter in crypto • 10M supply • Solana • Raydium</p>
+            
+            <div class="flex justify-center gap-8 text-4xl mb-12">
+                <a href="#" class="hover:text-[#FF6B00]"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="hover:text-[#FF6B00]"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#" class="hover:text-[#FF6B00]"><i class="fa-solid fa-chart-simple"></i></a>
+                <a href="#" class="hover:text-[#FF6B00]"><i class="fa-solid fa-dice"></i></a>
+            </div>
+            
+            <p class="text-sm opacity-70">© 2026 $OTTER • Not financial advice • Just vibes and snacks</p>
+        </div>
+    </footer>
 
     <script>
-        // Matrix Rain
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        const chars = '01アイウエオカキクケコ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const fontSize = 16;
-        let columns = width / fontSize;
-        let drops = Array(Math.floor(columns)).fill(1);
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = '#00ff41';
-            ctx.font = `${fontSize}px monospace`;
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 35);
-
-        // === GAME LOGIC ===
-        const termBody = document.getElementById('term-body');
-        const input = document.getElementById('command-input');
-        const keysList = document.getElementById('keys-list');
-        let foundKeys = [];
-
-        const keysDB = {
-            alpha: { id: 'ALPHA', code: 'GHOST47', found: false },
-            beta:  { id: 'BETA',  code: 'NEONSH4D0W', found: false },
-            gamma: { id: 'GAMMA', code: 'VOIDWALKER', found: false },
-            delta: { id: 'DELTA', code: 'K3YBR3ACH', found: false }
-        };
-
-        const privateKey = "4W8MoeP4QTuu2ZcCJ3tYjhQ5cTMTq91zRpEoE6quzBDMw6AtHw3gtAAJnQNoHnTprJXfmb8P8q52R8FDqbBwWWJC";
-
-        function addLine(text, color = '#00ff41') {
-            const line = document.createElement('div');
-            line.style.color = color;
-            line.innerHTML = text;
-            termBody.appendChild(line);
-            termBody.scrollTop = termBody.scrollHeight;
-        }
-
-        function updateKeysUI() {
-            keysList.innerHTML = foundKeys.map(k => `🔑 ${k.id}: ${k.code}`).join('<br>');
-            document.getElementById('key-count').textContent = foundKeys.length;
-        }
-
-        const commandHandler = {
-            help: () => addLine('help, clear, ls, ls -a, cat [file], scan, exploit, keys, submit [KEYCODE]', '#ffff00'),
-            clear: () => termBody.innerHTML = '<div>Terminal wiped.</div>',
-            ls: () => addLine('manifest.txt  encrypted_log.bin<br>Try ls -a', '#ffff00'),
-            'ls -a': () => {
-                addLine('.shadow_key  manifest.txt  .ghost_log');
-                if (!keysDB.beta.found) {
-                    keysDB.beta.found = true;
-                    foundKeys.push(keysDB.beta);
-                    updateKeysUI();
-                    addLine('KEY BETA UNLOCKED → NEONSH4D0W', '#ffff00');
-                }
-            },
-            cat: (args) => {
-                if (args[0] === 'manifest.txt') addLine('ZERO DAY key extraction active.', '#ffaa00');
-                else if (args[0] === '.shadow_key') {
-                    addLine('Shadow protocol decoded...');
-                    if (!keysDB.gamma.found) {
-                        keysDB.gamma.found = true;
-                        foundKeys.push(keysDB.gamma);
-                        updateKeysUI();
-                        addLine('KEY GAMMA UNLOCKED → VOIDWALKER', '#ffff00');
-                    }
-                } else if (args[0] === '.ghost_log') {
-                    addLine('Ghost node transmission intercepted...', '#ffaa00');
-                    if (!keysDB.alpha.found) {
-                        keysDB.alpha.found = true;
-                        foundKeys.push(keysDB.alpha);
-                        updateKeysUI();
-                        addLine('KEY ALPHA UNLOCKED → GHOST47', '#ffff00');
-                    }
-                } else addLine('Access denied or file not found.', '#ff4444');
-            },
-            scan: () => {
-                addLine('Scanning darknet nodes for anomalies...', '#ff8800');
-                setTimeout(() => {
-                    addLine('Anomaly detected in ghost node.', '#ffff00');
-                    addLine('Try: cat .ghost_log', '#ffff00');
-                }, 1000);
-            },
-            exploit: () => {
-                addLine('Zero-day deployed...', '#ff0000');
-                setTimeout(() => {
-                    addLine('Firewall collapsed.', '#00ffff');
-                    if (!keysDB.delta.found) {
-                        keysDB.delta.found = true;
-                        foundKeys.push(keysDB.delta);
-                        updateKeysUI();
-                        addLine('KEY DELTA UNLOCKED → K3YBR3ACH', '#00ffff');
-                    }
-                }, 1400);
-            },
-            keys: () => addLine('Collected: ' + (foundKeys.map(k => k.id).join(', ') || 'None'), '#ffff00'),
-            submit: (args) => {
-                const code = args.join('').toUpperCase();
-                let success = false;
-                Object.values(keysDB).forEach(key => {
-                    if (!key.found && key.code === code) {
-                        key.found = true;
-                        foundKeys.push(key);
-                        updateKeysUI();
-                        addLine(`KEY ${key.id} VERIFIED`, '#00ff00');
-                        success = true;
-                    }
-                });
-                if (!success) addLine('Invalid key.', '#ff4444');
-                
-                if (foundKeys.length >= 4) {
-                    setTimeout(() => {
-                        document.getElementById('success-screen').style.display = 'flex';
-                        addLine('ZERO DAY EXPLOIT SUCCESSFUL — PRIVATE KEY UNLOCKED', '#ffff00');
-                    }, 600);
-                }
-            }
-        };
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const cmd = input.value.trim();
-                if (!cmd) return;
-                addLine(`root@shadowcore:~$ ${cmd}`);
-                
-                const parts = cmd.split(' ');
-                const command = parts[0].toLowerCase();
-                const args = parts.slice(1);
-
-                if (commandHandler[command]) {
-                    commandHandler[command](args);
-                } else {
-                    addLine('Unknown command. Type help.', '#ff6666');
-                }
-                input.value = '';
-            }
-        });
-
-        // Private key copy
-        document.getElementById('private-key-box').addEventListener('click', () => {
-            const box = document.getElementById('private-key-box');
-            const notice = document.getElementById('copied-notice');
-
-            navigator.clipboard.writeText(privateKey).then(() => {
-                notice.style.opacity = '1';
-                box.textContent = "COPIED SUCCESSFULLY ✓";
-                box.style.borderColor = '#00ff00';
-                box.style.color = '#00ff00';
-                
-                setTimeout(() => {
-                    notice.style.opacity = '0';
-                    box.textContent = "CLICK TO REVEAL & COPY KEY";
-                    box.style.borderColor = '#ffff00';
-                    box.style.color = '#ffff00';
-                }, 2200);
-            });
-        });
-
-        // Boot
-        window.onload = () => {
-            setTimeout(() => addLine('Connection established to darknet node 47...', '#88ff88'), 500);
-            setTimeout(() => addLine('Initiating zero day key extraction protocol...', '#ffff00'), 1300);
-            input.focus();
-        };
+        // Tailwind script already loaded
+        console.log('%c$OTTER website ready! 🦦', 'color:#FF6B00; font-size:20px; font-weight:bold');
+        
+        // Replace this with your actual otter image URL (download the last edited cute otter from the chat)
+        // Example: document.getElementById('otter-hero').src = 'https://your-hosted-image-link.com/otter.jpg';
     </script>
 </body>
 </html>
